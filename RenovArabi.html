@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+  <head>
+    <title>RenovArabi</title>
+    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="style.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>let vh = window.innerHeight * 0.01; document.documentElement.style.setProperty('--vh', `${vh}px`)</script>
+    <script src="Scripts/Vars.js"></script>
+    <script src="Scripts/UsefulFuncs.js"></script>
+    <script src="Scripts/CipherText.js"></script>
+    <script src="Scripts/FreezeText.js"></script>
+    <script src="Scripts/ReverseText.js"></script>
+    <script src="Scripts/LoadTables.js"></script>
+    <script src="Scripts/FixTables.js"></script>
+    <script src="Scripts/SaveTables.js"></script>
+    <script src="Scripts/ConvertTextHex.js"></script>
+    <script src="Scripts/ConvertHarakat.js"></script>
+    <script src="Scripts/FitTextInBox.js"></script>
+    <script src="Scripts/OffsetText.js"></script>
+    <script src="Scripts/CompressText.js"></script>
+    <script src="main.js"></script>
+  </head>
+  <body>
+    <div class="tab">
+  <button class="tablinks" id="defaultTab" onclick="openTab(event, 'textConverter')">محول النصوص</button>
+  <button class="tablinks" onclick="openTab(event, 'tableEditor')">محرر الجداول</button>
+  <button class="tablinks" onclick="openTab(event, 'extractor&enteror')">المدخل والمستخرج</button>
+    </div>
+    
+    <div id="textConverter" class="tabcontent">
+      <div>
+      <div><label>الحروف:</label></div><div><label id=enteredcharsnum>0</label></div>
+      <textarea class=textbox id=enteredtext placeholder='النص الداخل' oninput="if (getById('autoconvert').checked) {getById('resultedtext').value = convertText(getById('enteredtext').value)}; enteringTextFunc(); resultingTextFunc();">تَجْرِبَةُ التَّحْوِيْل</textarea>
+      <div><label>الحروف:</label></div><div><label id=resultcharsnum>0</label></div>
+      <textarea class=textbox id=resultedtext placeholder='النص الخارج' oninput="resultingTextFunc();"></textarea>
+    </div>
+    
+    <div>
+      <button id=convert onclick="getById('resultedtext').value = convertText(getById('enteredtext').value); resultingTextFunc();">تحويل النص</button>
+      <button id=drawresulttext onclick="displayedPageIndex = 0; drawText(getById('resultedtext').value)">رسم النص الخارج</button>
+      <button id=loadfile onclick="getById('openfilebrowse').click()">فتح ملف</button>
+    </div>
+    <div>
+      <button onclick="printSuggestedDTEs()">اقترح اختزالات</button>
+    </div>
+  
+    
+    <hr>
+  
+    <div>
+      <canvas id=dialogbox width=300 height=0>متصفحك لا يدعم تعليمة (canvas).</canvas>
+    </div>
+    
+    <div>
+      <button onclick="displayedPageIndex += 1; drawText(getById('resultedtext').value)"><</button>
+      <button onclick="displayedPageIndex -= 1; drawText(getById('resultedtext').value)">></button>
+    </div>
+    
+    <hr>
+    
+    <label>تحويلات النص:</label>
+    <div>
+      <label class=checkboxlabel><input id=freeze type=checkbox>جمّده</label>
+      <label class=checkboxlabel><input id=unfreeze type=checkbox>انقض تجميده</label>
+      <label class=checkboxlabel><input id=cipher type=checkbox>رمّزه</label>
+      <label class=checkboxlabel><input id=uncipher type=checkbox>انقض ترميزه</label>
+      <label class=checkboxlabel><input id=reverseall type=checkbox>اعكسه</label>
+      <label class=checkboxlabel><input id=reversearabi type=checkbox>اعكس العربية فيه</label>
+      <label class=checkboxlabel><input id=compress type=checkbox>اختزله</label>
+      <label class=checkboxlabel><input id=uncompress type=checkbox>انقض اختزاله</label>
+      <label class=checkboxlabel><input id=putinbox type=checkbox>ضعه في صندوق</label>
+    </div>
+    
+    <label>تحويلات إضافية للحركات:</label>
+    <div>
+      <label class=checkboxlabel><input id=delharakat type=checkbox>احذفها</label>
+      <label class=checkboxlabel><input id=mergeharakat type=checkbox>ادمجها</label>
+      <label class=checkboxlabel><input id=offsetharakat type=checkbox>أزحها</label>
+      <label class=checkboxlabel><input id=keepfirstharakat type=checkbox>أبق الأولى بالتتالي</label>
+      <label class=checkboxlabel><input id=connectharakat type=checkbox>ضع لها تطويلة</label>
+    </div>
+    
+    <hr>
+    
+    <div>
+      <div><label class=celllabel>تعبير البايت 1:</label><textarea class=cell id=byteform1 placeholder=string>\x<byte></textarea></div>
+      <div><label class=celllabel>تعبير البايت 2:</label><textarea class=cell id=byteform2 placeholder=string>{$<byte>}</textarea></div>
+      <div><label class=celllabel>تعبير إزاحة النص:</label><textarea class=cell id=textoffsetcom placeholder=string>{<px>}</textarea></div>
+      <div><label class=celllabel>تعبير الأوامر:</label><textarea class=cell id=comform placeholder=string>[<command>]</textarea></div>
+      <div><label class=celllabel>أمر السطر:</label><textarea class=cell id=linecom placeholder=string>&line&</textarea></div>
+      <div><label class=celllabel>أمر الصفحة:</label><textarea class=cell id=pagecom placeholder=string>&page&</textarea></div>
+      <div><label class=celllabel>الرمز الافتراضي:</label><textarea class=cell id=defaultchiperchar placeholder=string>?</textarea></div>
+      <div><label class=celllabel>إزاحة الحركات بـ:</label><textarea class=cell id=harakatoffsetvalue placeholder=int>-1</textarea></div>
+      <div><label class=celllabel>عدد الاختزالات:</label><textarea class=cell id=dtesnum placeholder=int+>200</textarea></div>
+      <div><label class=celllabel>أطوال الاختزالات:</label><textarea class=cell id=dteslen placeholder=arr[int+]>3,2,4</textarea></div>
+      <div><label class=celllabel>الاختزالات المهملة:</label><textarea class=cell id=ignoreddtes placeholder=string></textarea></div>
+      <div><label class=celllabel>حجم الخط:</label><textarea class=cell id=fontsize placeholder=int+>24</textarea></div>
+      <div><label class=celllabel>حجم الصندوق:</label><textarea class=cell id=boxsize placeholder=arr[int+,2]>360,120</textarea></div>
+      <div><label class=celllabel>بين السطور:</label><textarea class=cell id=pxbetweenlines placeholder=int>3</textarea></div>
+    </div>
+    
+    <hr>
+    
+    <div>
+      <div>
+        <label class=celllabel>تحويل من:</label>
+        <select id="convertfrom">
+          <option>الأشكال الطباعية</option>
+          <option>تعبير البايت 1</option>
+        </select>
+      </div>
+      <div>
+        <label class=celllabel>إلى:</label>
+        <select id="convertto">
+          <option>الأشكال الطباعية</option>
+          <option>تعبير البايت 2</option>
+        </select>
+      </div>
+      <div>
+        <label class=celllabel>طول البايت الداخل:</label>
+        <select id="inbytelen">
+          <option>1</option>
+          <option>2</option>
+        </select>
+      </div>
+      <div>
+        <label class=celllabel>طول البايت الخارج:</label>
+        <select id="outbytelen">
+          <option>1</option>
+          <option selected>2</option>
+        </select>
+      </div>
+      <div>
+        <label class=celllabel>المفقود من الترميز:</label>
+        <select id="notinchipertable">
+          <option>يترك على حاله</option>
+          <option>يعوض بالرمز الافتراضي</option>
+          <option>يحذف</option>
+        </select>
+      </div>
+      <div>
+        <label class=celllabel>إزاحة النص:</label>
+        <select id="offset">
+          <option>اترك النص على حاله</option>
+          <option>النص في البداية واملأ ما بعده</option>
+          <option>النص في النهاية واملأ ما قبله</option>
+          <option>النص في الوسط واملأ ما قبله</option>
+          <option>النص في الوسط واملأ ما قبله وبعده</option>
+        </select>
+      </div>
+      <div>
+        <label class=celllabel>بـ:</label>
+        <select id="offsetwith">
+          <option>الفراغات</option>
+          <option>تعبير إزاحة النص</option>
+        </select>
+      </div>
+      <div>
+        <label class=celllabel>سكربتات تحويل:</label>
+        <select id="conertingscripts" disabled>
+          <option>...</option>
+          <option>تحديث القائمة</option>
+        </select>
+      </div>
+    </div>
+    
+    <hr>
+  
+    <div>
+      <div>
+        <label class=checkboxlabel><input id=rtl type=checkbox>تدفق النص من اليمين</label>
+        <label class=checkboxlabel><input id=boundaries type=checkbox disabled>إظهار صناديق الحدود</label>
+      </div>
+      <div>
+        <label class=checkboxlabel><input id=autoconvert type=checkbox checked>تحويل تلقائي</label>
+        <label class=checkboxlabel><input id=autocopy type=checkbox>نسخ تلقائي</label>
+      </div>
+    </div>
+    
+  <hr>
+  
+  <div>
+    <input id=chipertablecheck type=checkbox checked><button id=chipertablebutton onclick="getById('chipertablebrowse').click()">فتح جدول ترميز</button>
+    <input id=fonttablecheck type=checkbox checked><button id=fontbutton onclick="getById('fonttablebrowse').click(); getById('fontimgbrowse').click()">فتح خط</button>
+  </div>
+  
+  <input type=file id=openfilebrowse accept="*" onchange='loadTextFile(event)'>
+  <input type=file id=chipertablebrowse onchange="loadciphertable(event)" accept=".act, .tbl, .zts, .zta">
+  <input type=file id=fonttablebrowse onchange=" loadfonttable(event)" >
+  <input type=file id=fontimgbrowse onchange=" loadfontimage(event)" accept="images/*">
+  <script>enteringTextFunc()</script>
+    </div>
+  
+  <div id="tableEditor" class="tabcontent">
+  <div><label>- محرر جداول الترميز -</label></div>
+  <script>
+    var cipheringTableEditor = CreateHTMLTable(17, 17);
+    const a = "0123456789ABCDEF"
+    for (var i of range(0, a.length)) {
+      cipheringTableEditor.rows.item(i+1).cells.item(0).innerHTML = `<b>${a[i]}0</b>`;
+      cipheringTableEditor.rows.item(i+1).cells.item(0).contentEditable = "false";
+      cipheringTableEditor.rows.item(0).cells.item(i+1).innerHTML = `<b>${a[i]}</b>`;
+      cipheringTableEditor.rows.item(0).cells.item(i+1).contentEditable = "false";
+    }
+    cipheringTableEditor.rows.item(0).cells.item(0).contentEditable = "false";
+    cipheringTableEditor = fillCTE(cipheringTableEditor);
+    getById("tableEditor").appendChild(cipheringTableEditor);
+  </script>
+  
+  <div>
+    <textarea id=CTEcharbox placeholder='صندوق الحروف'></textarea>
+    <script>getById("CTEcharbox").value = FreezedArabicChars+FreezedHarakat;</script>
+  </div>
+  
+  <div>
+      <button id=convert onclick="getById('chipertabletoeditbrowse').click()">فتح جدول</button>
+      <button onclick="saveTableFromCTE('act')">حفظ الجدول act</button>
+      <button onclick="saveTableFromCTE('tbl')">حفظ الجدول tbl</button>
+  </div>
+  
+  <hr>
+  
+  <div><label>- منتج جداول fnt -</label></div>
+  
+  <hr>
+  
+  <div><label>- منتج جداول aff -</label></div
+  
+  <input type=file id=chipertabletoeditbrowse onchange="loadTableForCTE(event)" accept=".act, .tbl, .zts, .zta">
+  </div>
+    
+  <script>getById("defaultTab").click();</script>
+</body>
+</html>
