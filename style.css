@@ -23,9 +23,9 @@ textarea.textbox {
   margin: 2px;
   width: calc(100% - 6px);
   /*height: calc(50vh - 48px);*/
-  height: calc(var(--vh, 1vh) * 50 - 78px);
-  resize: none;
-  font-size: 20px;
+  height: calc(var(--vh, 1vh) * 50 - 96px);
+  /*resize: none;*/
+  font-size: 18px;
   font-weight: bold;
 }
 

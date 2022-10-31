@@ -19,22 +19,26 @@
     <script src="Scripts/FitTextInBox.js"></script>
     <script src="Scripts/OffsetText.js"></script>
     <script src="Scripts/CompressText.js"></script>
+    <script src="Scripts/ExtractFromText.js"></script>
     <script src="main.js"></script>
   </head>
   <body>
     <div class="tab">
   <button class="tablinks" id="defaultTab" onclick="openTab(event, 'textConverter')">محول النصوص</button>
   <button class="tablinks" onclick="openTab(event, 'tableEditor')">محرر الجداول</button>
+  <button class="tablinks" onclick="openTab(event, 'filetranslator')">مترجم الملفات</button>
   <button class="tablinks" onclick="openTab(event, 'extractor&enteror')">المدخل والمستخرج</button>
     </div>
     
     <div id="textConverter" class="tabcontent">
       <div>
-      <div><label>الحروف:</label></div><div><label id=enteredcharsnum>0</label></div>
+      <label>الحروف:</label><label id=enteredcharsnum>0</label>
       <textarea class=textbox id=enteredtext placeholder='النص الداخل' oninput="if (getById('autoconvert').checked) {getById('resultedtext').value = convertText(getById('enteredtext').value)}; enteringTextFunc(); resultingTextFunc();">تَجْرِبَةُ التَّحْوِيْل</textarea>
-      <div><label>الحروف:</label></div><div><label id=resultcharsnum>0</label></div>
+      </div>
+      <div>
+      <label>الحروف:</label><label id=resultcharsnum>0</label>
       <textarea class=textbox id=resultedtext placeholder='النص الخارج' oninput="resultingTextFunc();"></textarea>
-    </div>
+      </div>
     
     <div>
       <button id=convert onclick="getById('resultedtext').value = convertText(getById('enteredtext').value); resultingTextFunc();">تحويل النص</button>
@@ -69,6 +73,7 @@
       <label class=checkboxlabel><input id=reversearabi type=checkbox>اعكس العربية فيه</label>
       <label class=checkboxlabel><input id=compress type=checkbox>اختزله</label>
       <label class=checkboxlabel><input id=uncompress type=checkbox>انقض اختزاله</label>
+      <label class=checkboxlabel><input id=extract type=checkbox>استخرج منه</label>
       <label class=checkboxlabel><input id=putinbox type=checkbox>ضعه في صندوق</label>
     </div>
     
@@ -86,18 +91,20 @@
     <div>
       <div><label class=celllabel>تعبير البايت 1:</label><textarea class=cell id=byteform1 placeholder=string>\x<byte></textarea></div>
       <div><label class=celllabel>تعبير البايت 2:</label><textarea class=cell id=byteform2 placeholder=string>{$<byte>}</textarea></div>
-      <div><label class=celllabel>تعبير إزاحة النص:</label><textarea class=cell id=textoffsetcom placeholder=string>{<px>}</textarea></div>
       <div><label class=celllabel>تعبير الأوامر:</label><textarea class=cell id=comform placeholder=string>[<command>]</textarea></div>
+      <div><label class=celllabel>تعبير إزاحة النص:</label><textarea class=cell id=textoffsetcom placeholder=string>{<px>}</textarea></div>
+      <div><label class=celllabel>تعبير الاستخراج:</label><textarea class=cell id=extractcom placeholder=string>||<text>||</textarea></div>
       <div><label class=celllabel>أمر السطر:</label><textarea class=cell id=linecom placeholder=string>&line&</textarea></div>
       <div><label class=celllabel>أمر الصفحة:</label><textarea class=cell id=pagecom placeholder=string>&page&</textarea></div>
       <div><label class=celllabel>الرمز الافتراضي:</label><textarea class=cell id=defaultchiperchar placeholder=string>?</textarea></div>
       <div><label class=celllabel>إزاحة الحركات بـ:</label><textarea class=cell id=harakatoffsetvalue placeholder=int>-1</textarea></div>
+      <div><label class=celllabel>طول المستخرَج:</label><textarea class=cell id=extractedlength placeholder=arr[int+,2]>2,400</textarea></div>
       <div><label class=celllabel>عدد الاختزالات:</label><textarea class=cell id=dtesnum placeholder=int+>200</textarea></div>
       <div><label class=celllabel>أطوال الاختزالات:</label><textarea class=cell id=dteslen placeholder=arr[int+]>3,2,4</textarea></div>
       <div><label class=celllabel>الاختزالات المهملة:</label><textarea class=cell id=ignoreddtes placeholder=string></textarea></div>
       <div><label class=celllabel>حجم الخط:</label><textarea class=cell id=fontsize placeholder=int+>24</textarea></div>
-      <div><label class=celllabel>حجم الصندوق:</label><textarea class=cell id=boxsize placeholder=arr[int+,2]>360,120</textarea></div>
-      <div><label class=celllabel>بين السطور:</label><textarea class=cell id=pxbetweenlines placeholder=int>3</textarea></div>
+      <div><label class=celllabel>حجم صندوق الخط:</label><textarea class=cell id=boxsize placeholder=arr[int+,2]>360,120</textarea></div>
+      <div><label class=celllabel>بين سطور الصندوق:</label><textarea class=cell id=pxbetweenlines placeholder=int>3</textarea></div>
     </div>
     
     <hr>
@@ -187,8 +194,8 @@
   
   <input type=file id=openfilebrowse accept="*" onchange='loadTextFile(event)'>
   <input type=file id=chipertablebrowse onchange="loadciphertable(event)" accept=".act, .tbl, .zts, .zta">
-  <input type=file id=fonttablebrowse onchange=" loadfonttable(event)" >
-  <input type=file id=fontimgbrowse onchange=" loadfontimage(event)" accept="images/*">
+  <input type=file id=fonttablebrowse onchange=" loadfonttable(event)"> <!-- accept=".fnt, .aff, .ttf" -->
+  <input type=file name="files" id=fontimgbrowse onchange="loadfontimages(event)" accept="images/*" multiple>
   <script>enteringTextFunc()</script>
     </div>
   
@@ -215,8 +222,8 @@
   
   <div>
       <button id=convert onclick="getById('chipertabletoeditbrowse').click()">فتح جدول</button>
-      <button onclick="saveTableFromCTE('act')">حفظ الجدول act</button>
-      <button onclick="saveTableFromCTE('tbl')">حفظ الجدول tbl</button>
+      <button onclick="saveTable('CipheringTable.act', getCharmapFromCTE());">حفظ الجدول act</button>
+      <button onclick="saveTable('CipheringTable.tbl', getCharmapFromCTE());">حفظ الجدول tbl</button>
   </div>
   
   <hr>
@@ -225,11 +232,20 @@
   
   <hr>
   
-  <div><label>- منتج جداول aff -</label></div
+  <div><label>- منتج جداول aff -</label></div>
   
   <input type=file id=chipertabletoeditbrowse onchange="loadTableForCTE(event)" accept=".act, .tbl, .zts, .zta">
   </div>
     
   <script>getById("defaultTab").click();</script>
+  
+  <div id="filetranslator" class="tabcontent">
+  <script>
+    var fileTranslatorTable = CreateHTMLTable(1, 2);
+    fileTranslatorTable.rows.item(0).cells.item(0).innerHTML = "<b>الأصلي</b>";
+    fileTranslatorTable.rows.item(0).cells.item(1).innerHTML = "<b>الترجمة</b>";
+    
+    getById("filetranslator").appendChild(fileTranslatorTable);
+  </script>
 </body>
 </html>

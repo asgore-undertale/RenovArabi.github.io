@@ -1,6 +1,6 @@
 var ciphertable = {};
 var fonttable = {};
-var fontimg = new Image();
+var fontimgs = {};
 var displayedPageIndex = 0;
 
 /*function getTextTtfWidth(text, font) {
@@ -36,6 +36,8 @@ function convertText(text) {
       const ignoreddtes = getById("ignoreddtes").value;
       const boxsize = getById("boxsize").value.split(',').map(x => parseInt(x));
       const pxbetweenlines = parseInt(getById("pxbetweenlines").value);
+      const extractcom = getById("extractcom").value;
+      const extractedlength = getById("extractedlength").value.split(',').map(x => parseInt(x));
       
       var _ciphertable = {};
       var _fonttable = {};
@@ -51,6 +53,7 @@ function convertText(text) {
         var part = textlist[p];
         if (p) {newtext+=commands[p-1]}
         if (!part.length) {continue}
+        if (getById("extract").checked) {part = ExtractFromText(part, extractcom, extractedlength).join("\n")}
         if (getById("convertfrom").selectedIndex) {part = ConvertTextHex(part, byteform1, getById("inbytelen").selectedIndex+1, false)}
         if (getById("delharakat").checked) {part = DelHarakat(part)}
         else {
@@ -145,7 +148,7 @@ function convertText(text) {
             }
         }
         else {
-            ctx.drawImage(fontimg, chardata.x, chardata.y, chardata.w, chardata.h, X, Y, chardata.w*_fonttable.scale, chardata.h*_fonttable.scale);
+            ctx.drawImage(fontimgs[_fonttable.pages[chardata.page]], chardata.x, chardata.y, chardata.w, chardata.h, X, Y, chardata.w*_fonttable.scale, chardata.h*_fonttable.scale);
         }
         x += (chardata.w+chardata.xadv)*_fonttable.scale;
       }
@@ -153,21 +156,20 @@ function convertText(text) {
     }
     
     async function loadciphertable(event) {
-      const path = getById('chipertablebrowse').value;
-	  const text = await readFile(event);
-      ciphertable = loadTable(path, text);
+      ciphertable = await loadTable(event.target.files[0]);
       console.log(ciphertable);
     }
 	
     async function loadfonttable(event) {
-      const path = getById('fonttablebrowse').value;
-      const text = await readFile(event);
-      fonttable = loadTable(path, text);
+      fonttable = await loadTable(event.target.files[0]);
       console.log(fonttable);
     }
 	
-    async function loadfontimage(event) {
-      fontimg = await loadImage(event);
+    async function loadfontimages(event) {
+      fontimgs = {};
+      for (file of event.target.files) {
+        fontimgs[file.name] = await loadImage(file);
+      }
     }
     
     function updatefontsize() {
@@ -177,7 +179,7 @@ function convertText(text) {
     }
 	
     async function loadTextFile(event) {
-      getById('enteredtext').value = await readFile(event);
+      getById('enteredtext').value = await readFile(event.target.files[0]);
     }
     
     function fillCTE(table) { // CipheringTableEditor
@@ -190,9 +192,7 @@ function convertText(text) {
     }
     
     async function loadTableForCTE(event) {
-      const path = getById('chipertabletoeditbrowse').value;
-	     const text = await readFile(event);
-      const table = loadTable(path, text, false);
+      const table = await loadTable(event.target.files[0], false);
       cipheringTableEditor = clearHTMLtable(cipheringTableEditor, {x:1, y:1});
       for ([k, v] of Object.entries(table)) {
         if (!v.length) {continue}
@@ -217,10 +217,6 @@ function getCharmapFromCTE() {
     }
   }
   return charmap;
-}
-
-function saveTableFromCTE(type) {
-  saveTable("CipheringTable."+type, getCharmapFromCTE());
 }
 
 function printSuggestedDTEs() {
