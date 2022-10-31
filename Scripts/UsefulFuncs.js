@@ -33,9 +33,9 @@ function readCsv(csvContent) {
     return csvtable;
 }
 
-async function readFile(event) {
+async function readFile(file) {
   const reader = new FileReader();
-  reader.readAsText(event.target.files[0]);
+  reader.readAsText(file);
   const result = await new Promise((resolve, reject) => {
     reader.onload = function(event) {
     resolve(reader.result)
@@ -44,11 +44,11 @@ async function readFile(event) {
   return result
 }
 
-async function loadImage(event) {
+async function loadImage(file) {
   event.preventDefault();
   if (event.target.files[0] === undefined) {return}
   let reader = new FileReader();
-  reader.readAsDataURL(event.target.files[0])
+  reader.readAsDataURL(file)
   const result = await new Promise((resolve, reject) => {
     reader.onload = function(event) {
     let img = document.createElement('img');

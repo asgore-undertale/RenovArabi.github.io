@@ -1,12 +1,13 @@
-function loadTable(path, content, completearabic=true) {
+async function loadTable(file, completearabic=true) {
   var charmap = {};
+  const content = await readFile(file);
   // if (filePath.endsWith('.ttf')) {charmap = loadTTF(fileContent, chars, fontSize)}
-  if      (path.endsWith('.fnt')) {charmap = loadFNT(content, path)}
-  else if (path.endsWith('.aff')) {charmap = loadAFF(content)}
-  else if (path.endsWith('.act')) {charmap = loadACT(content)}
-  else if (path.endsWith('.tbl')) {charmap = loadTBL(content)}
-  else if (path.endsWith('.zts')) {charmap = loadZTS(content)}
-  else if (path.endsWith('.zta')) {charmap = loadZTA(content)}
+  if      (file.name.endsWith('.fnt')) {charmap = loadFNT(content)}
+  else if (file.name.endsWith('.aff')) {charmap = loadAFF(content)}
+  else if (file.name.endsWith('.act')) {charmap = loadACT(content)}
+  else if (file.name.endsWith('.tbl')) {charmap = loadTBL(content)}
+  else if (file.name.endsWith('.zts')) {charmap = loadZTS(content)}
+  else if (file.name.endsWith('.zta')) {charmap = loadZTA(content)}
   else {return {}}
   
   if (completearabic) {
@@ -15,12 +16,12 @@ function loadTable(path, content, completearabic=true) {
   return charmap.removeUseless();
 }
 
-function loadFNT(fntContent, fntPath) {
+function loadFNT(fntContent) {
   if (fntContent.includes('<?xml version="1.0"?>')) { //Xml
     find = [/<page id="(.*?)" file="(.*?)" \/>/g, /<char id="(.*?)" x="(.*?)" y="(.*?)" width="(.*?)" height="(.*?)" xoffset="(.*?)" yoffset="(.*?)" xadvance="(.*?)" page="(.*?)" chnl="(.*?)" \/>/g];
   }
   else { //Text
-    find = [/\nchar id=(.*?) x=(.*?) y=(.*?) width=(.*?) height=(.*?) xoffset=(.*?) yoffset=(.*?) xadvance=(.*?) /g];
+    find = [/page id=(.*?) file="(.*?)"/g, /char id=(.*?)[ *?]x=(.*?)[ *?]y=(.*?)[ *?]width=(.*?)[ *?]height=(.*?)[ *?]xoffset=(.*?)[ *?]yoffset=(.*?)[ *?]xadvance=(.*?)[ *?]page=(.*?)[ *?]chnl=(.*?)/g];
   }
   
   const pages = Array.from(fntContent.matchAll(find[0])).map(x => x.slice(1));
