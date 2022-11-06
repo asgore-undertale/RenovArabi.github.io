@@ -13,14 +13,13 @@ function ReverseArabic(text) {
     if (fullStack.includes(text.charAt(i))) {
       container += text.charAt(i);
     }
-	else {
+    else {
       if (container.length) {
         newtext.push(ReverseAll(container));
         newtext.push("")
-		      container = '';
+        container = '';
       }
-      console.log(newtext[newtext.length-1])
-	  newtext[newtext.length-1] += text.charAt(i);
+      newtext[newtext.length-1] += text.charAt(i);
     }
   }
   newtext.push(ReverseAll(container));

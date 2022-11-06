@@ -1,5 +1,5 @@
 function CompressText(text, dteLengths, resultsNum, ignoredDtes) {
-  if (!text.length) {return}
+  if (!text.length) {return ""}
   
   const dtesList = [].concat(...dteLengths.map(x => text.subs(x))).removeDublicatedItems().filter(x => (x in mergedArabicChars && !ignoredDtes.includes(mergedArabicChars[x])));
   

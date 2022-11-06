@@ -11,7 +11,7 @@ async function loadTable(file, completearabic=true) {
   else {return {}}
   
   if (completearabic) {
-      return completeArabic(charmap.removeUseless());
+    return completeArabic(charmap.removeUseless());
   }
   return charmap.removeUseless();
 }

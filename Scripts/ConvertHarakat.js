@@ -31,7 +31,7 @@ function ConnectHarakat(text) {
     
     for (var [key, value] of Object.entries(connectedHarakatTable)) {
       if (value.includes(text[i])) {newtext += key; break}
-	}
+    }
   }
   return newtext;
 }

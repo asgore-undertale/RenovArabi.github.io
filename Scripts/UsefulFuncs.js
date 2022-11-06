@@ -15,22 +15,22 @@ function zip() {
 }
 
 function readCsv(csvContent) {
-    var csvtable = [];
-    var row = [];
-    var content = '';
-    var mode = true;
-    
-    for (var c of range(0, csvContent.length)) {
-        if (csvContent[c]+csvContent[c+1] == _CSV_QUOTECHAR_.repeat(2) && !mode) {content += _CSV_QUOTECHAR_}
-        if (csvContent[c] == _CSV_QUOTECHAR_) {mode = !mode; continue}
-        if (csvContent[c] == _CSV_QUOTECHAR_ && (csvContent[c+1] == _CSV_DELIMITER_ || Returns.includes(csvContent[c]) || !csvContent[c+1]) && !mode) {mode = true; continue}
-        if (csvContent[c] == _CSV_DELIMITER_ && mode) {row.push(content); content = ''; continue}
-        if (Returns.includes(csvContent[c]) && mode) {row.push(content); content = ''; csvtable.push(row); row = []; continue}
-        content += csvContent[c];
-    }
-    row.push(content);
-    csvtable.push(row);
-    return csvtable;
+  var csvtable = [];
+  var row = [];
+  var content = '';
+  var mode = true;
+  
+  for (var c of range(0, csvContent.length)) {
+    if (csvContent[c]+csvContent[c+1] == _CSV_QUOTECHAR_.repeat(2) && !mode) {content += _CSV_QUOTECHAR_}
+    if (csvContent[c] == _CSV_QUOTECHAR_) {mode = !mode; continue}
+    if (csvContent[c] == _CSV_QUOTECHAR_ && (csvContent[c+1] == _CSV_DELIMITER_ || Returns.includes(csvContent[c]) || !csvContent[c+1]) && !mode) {mode = true; continue}
+    if (csvContent[c] == _CSV_DELIMITER_ && mode) {row.push(content); content = ''; continue}
+    if (Returns.includes(csvContent[c]) && mode) {row.push(content); content = ''; csvtable.push(row); row = []; continue}
+    content += csvContent[c];
+  }
+  row.push(content);
+  csvtable.push(row);
+  return csvtable;
 }
 
 async function readFile(file) {
@@ -168,30 +168,19 @@ String.prototype.endsWith = function(suffix) {
 }
 
 String.prototype.hexEncode = function(bytelen=2) {
-    var result = "";
-    for (var i of range(0, this.length)) {
-        hex = this.charCodeAt(i).toString(16);
-        result += ("000"+hex).slice(-bytelen*2);
-    }
-    return result
+  var result = "";
+  for (var i of range(0, this.length)) {
+    hex = this.charCodeAt(i).toString(16);
+    result += ("000"+hex).slice(-bytelen*2);
+  }
+  return result
 }
 
 String.prototype.hexDecode = function(bytelen=2) {
-    var hexes = this.match(`.{1,${bytelen*2}}`.toRegex('g')) || [];
-    var back = "";
-    for (var i of range(0, hexes.length)) {back += String.fromCharCode(parseInt(hexes[i], 16))}
-    return back;
-}
-
-String.prototype.swapCharsOnEdges = function(char) {
-  if (this.length < 2) {return this}
-  
-  var charsBefore = 0;
-  var charsAfter = 0;
-  while (this[charsBefore] == char) {charsBefore++}
-  while (this[-1-charsAfter] == char) {charsAfter++}
-  
-  return char.repeat(charsAfter) + this.slice(charsBefore, this.length-charsAfter) + char.repeat(charsBefore);
+  var hexes = this.match(`.{1,${bytelen*2}}`.toRegex('g')) || [];
+  var back = "";
+  for (var i of range(0, hexes.length)) {back += String.fromCharCode(parseInt(hexes[i], 16))}
+  return back;
 }
 
 String.prototype.splitPlus = function(splitter, num =- 1) {
