@@ -2,6 +2,7 @@ var ciphertable = {};
 var fonttable = {};
 var fontimgs = {};
 var displayedPageIndex = 0;
+var translatedFile;
 
 /*function getTextTtfWidth(text, font) {
   var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
@@ -155,19 +156,19 @@ function convertText(text) {
     }
     }
     
-    async function loadciphertable(event) {
-      ciphertable = await loadTable(event.target.files[0]);
+    async function loadciphertable(file) {
+      ciphertable = await loadTable(file);
       console.log(ciphertable);
     }
 	
-    async function loadfonttable(event) {
-      fonttable = await loadTable(event.target.files[0]);
+    async function loadfonttable(file) {
+      fonttable = await loadTable(file);
       console.log(fonttable);
     }
 	
-    async function loadfontimages(event) {
+    async function loadfontimages(files) {
       fontimgs = {};
-      for (file of event.target.files) {
+      for (file of files) {
         fontimgs[file.name] = await loadImage(file);
       }
     }
@@ -178,8 +179,8 @@ function convertText(text) {
       fonttable.scale = fontsize/fonttable.tallest;
     }
 	
-    async function loadTextFile(event) {
-      getById('enteredtext').value = await readFile(event.target.files[0]);
+    async function loadTextFile(file) {
+      getById('enteredtext').value = await readFile(file);
     }
     
     function fillCTE(table) { // CipheringTableEditor
@@ -191,8 +192,8 @@ function convertText(text) {
       return table
     }
     
-    async function loadTableForCTE(event) {
-      const table = await loadTable(event.target.files[0], false);
+    async function loadTableForCTE(file) {
+      const table = await loadTable(file, false);
       cipheringTableEditor = clearHTMLtable(cipheringTableEditor, {x:1, y:1});
       for ([k, v] of Object.entries(table)) {
         if (!v.length) {continue}
@@ -225,4 +226,26 @@ function printSuggestedDTEs() {
   const resultsNum = parseInt(getById("dtesnum").value);
   
   prompt("الاختزالات من الأكثر وروداً للأقل:", "("+SuggestDTE(text, dteLengths, resultsNum).join(") (")+")");
+}
+
+async function loadFileToTranslate(file) {
+  translatedFile = file;
+  fileContent = await readFile(file);
+  const textList = fileContent.match(/(.*?)\n/g);
+  const transList = fileContent.match(/(.*?)\n/g);
+  fileTranslatorTable = CreateHTMLTable(textList.length+1, 2);
+  for (t of range(0, textList.length)) {
+    fileTranslatorTable.rows.item(t+1).cells.item(0).innerHTML = textList[t];
+    fileTranslatorTable.rows.item(t+1).cells.item(1).innerHTML = textList[t];
+  }
+  getById("filetranslator").removeChild(fileTranslatorTable);
+  getById("filetranslator").appendChild(fileTranslatorTable);
+}
+
+async function saveTranslatedFile() {
+  var content = await readFile(translatedFile);
+  for (r of range(1, fileTranslatorTable.rows.length-1)) {
+    content = content.replace(fileTranslatorTable.rows.item(r).cells.item(0).innerHTML, fileTranslatorTable.rows.item(r).cells.item(1).innerHTML);
+  }
+  content.downloadAsFile(translatedFile.name);
 }

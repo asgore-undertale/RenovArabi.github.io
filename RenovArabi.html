@@ -192,10 +192,10 @@
     <input id=fonttablecheck type=checkbox checked><button id=fontbutton onclick="getById('fonttablebrowse').click(); getById('fontimgbrowse').click()">فتح خط</button>
   </div>
   
-  <input type=file id=openfilebrowse accept="*" onchange='loadTextFile(event)'>
-  <input type=file id=chipertablebrowse onchange="loadciphertable(event)" accept=".act, .tbl, .zts, .zta">
-  <input type=file id=fonttablebrowse onchange=" loadfonttable(event)"> <!-- accept=".fnt, .aff, .ttf" -->
-  <input type=file name="files" id=fontimgbrowse onchange="loadfontimages(event)" accept="images/*" multiple>
+  <input type=file id=openfilebrowse accept="*" onchange='loadTextFile(event.target.files[0])'>
+  <input type=file id=chipertablebrowse onchange="loadciphertable(event.target.files[0])" accept=".act, .tbl, .zts, .zta">
+  <input type=file id=fonttablebrowse onchange="loadfonttable(event.target.files[0])" accept=".fnt, .aff, .ttf">
+  <input type=file name="files" id=fontimgbrowse onchange="loadfontimages(event.target.files)" accept="images/*" multiple>
   <script>enteringTextFunc()</script>
     </div>
   
@@ -234,18 +234,29 @@
   
   <div><label>- منتج جداول aff -</label></div>
   
-  <input type=file id=chipertabletoeditbrowse onchange="loadTableForCTE(event)" accept=".act, .tbl, .zts, .zta">
+  <input type=file id=chipertabletoeditbrowse onchange="loadTableForCTE(event.target.files[0])" accept=".act, .tbl, .zts, .zta">
   </div>
     
   <script>getById("defaultTab").click();</script>
   
   <div id="filetranslator" class="tabcontent">
+  
+  <div>
+      <button onclick="getById('fileftansbrowse').click()">فتح ملف</button>
+      <button onclick="saveTranslatedFile()">حفظ الملف</button>
+  </div>
+  
   <script>
     var fileTranslatorTable = CreateHTMLTable(1, 2);
     fileTranslatorTable.rows.item(0).cells.item(0).innerHTML = "<b>الأصلي</b>";
     fileTranslatorTable.rows.item(0).cells.item(1).innerHTML = "<b>الترجمة</b>";
+    fileTranslatorTable.rows.item(0).cells.item(0).contentEditable = "false";
+    fileTranslatorTable.rows.item(0).cells.item(1).contentEditable = "false";
     
     getById("filetranslator").appendChild(fileTranslatorTable);
   </script>
+    
+  <input type=file id=fileftansbrowse onchange="loadFileToTranslate(event.target.files[0])">
+  </div>
 </body>
 </html>
