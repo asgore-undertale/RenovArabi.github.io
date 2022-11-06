@@ -1,13 +1,25 @@
 div {
-  margin: 5px;
+  margin: 3px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
 }
 
+@media screen and (min-aspect-ratio: 4/3) {
+  div.main {
+    width: calc(50vw - 40px);
+  }
+}
+
+@media screen and (max-aspect-ratio: 4/3) {
+  div.main {
+    width: 100%;
+  }
+}
+
 button {
-  margin: 0 2px;
+  margin: 2px;
   width: 32%;
   height: 24px;
   font-weight: bold;
@@ -15,16 +27,14 @@ button {
 
 textarea {
   width: 100%;
-  height: 100px;
+  resize: none;
 }
 
 textarea.textbox {
   display: block;
   margin: 2px;
   width: calc(100% - 6px);
-  /*height: calc(50vh - 48px);*/
-  height: calc(var(--vh, 1vh) * 50 - 96px);
-  /*resize: none;*/
+  height: calc(50vh - 96px);
   font-size: 18px;
   font-weight: bold;
 }
@@ -32,30 +42,30 @@ textarea.textbox {
 textarea.cell {
   direction: ltr;
   margin-left: 2px;
-  width: 95px;
-  height: 22px; /*16*/
-  resize: none;
+  width: 83px;
+  height: 16px;
   font-weight: bold;
 }
 
 select {
-  width: 96px;
+  width: 93px;
+  height: 22px;
   margin-left: 2px;
   font-weight: bold;
 }
 
 label {
-  height: 26px;
+  height: 20px;
   font-size: 14px;
   font-weight: bold;
 }
 
 label.checkboxlabel {
-  width: 135px;
+  width: 130px;
 }
 
 label.celllabel {
-  width: 110px;
+  width: 100px;
 }
 
 input[type="file"] {
@@ -64,16 +74,17 @@ input[type="file"] {
 
 hr {
   border-top: 3px dashed #bbb;
+  width: 100%;
 }
 
 table {
   border: 1px solid #999999;
   width: 100%;
+  table-layout: fixed;
 }
 
 th, td {
   border: 1px solid #999999;
-  width: auto;
   text-align: center;
 }
 
@@ -81,11 +92,7 @@ canvas {
   background-color: #999999;
   border: 2px solid #000000;
   border-radius: 2px;
-  image-rendering: optimizeSpeed;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: optimize-contrast;
-  -ms-interpolation-mode: nearest-neighbor;
+  width: 50%;
 }
 
 .tab {
@@ -100,7 +107,6 @@ canvas {
   border: none;
   outline: none;
   cursor: pointer;
-  /*padding: 14px 16px;*/
   transition: 0.3s;
 }
 
@@ -114,7 +120,6 @@ canvas {
 
 .tabcontent {
   display: none;
-  /*padding: 6px 12px;*/
   border: 1px solid #ccc;
   border-top: none;
 }

@@ -5,7 +5,6 @@
     <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="style.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>let vh = window.innerHeight * 0.01; document.documentElement.style.setProperty('--vh', `${vh}px`)</script>
     <script src="Scripts/Vars.js"></script>
     <script src="Scripts/UsefulFuncs.js"></script>
     <script src="Scripts/CipherText.js"></script>
@@ -31,40 +30,36 @@
     </div>
     
     <div id="textConverter" class="tabcontent">
-      <div>
+    <div>
+      <div class=main>
       <label>الحروف:</label><label id=enteredcharsnum>0</label>
       <textarea class=textbox id=enteredtext placeholder='النص الداخل' oninput="if (getById('autoconvert').checked) {getById('resultedtext').value = convertText(getById('enteredtext').value)}; enteringTextFunc(); resultingTextFunc();">تَجْرِبَةُ التَّحْوِيْل</textarea>
-      </div>
-      <div>
       <label>الحروف:</label><label id=resultcharsnum>0</label>
       <textarea class=textbox id=resultedtext placeholder='النص الخارج' oninput="resultingTextFunc();"></textarea>
-      </div>
-    
-    <div>
+
       <button id=convert onclick="getById('resultedtext').value = convertText(getById('enteredtext').value); resultingTextFunc();">تحويل النص</button>
       <button id=drawresulttext onclick="displayedPageIndex = 0; drawText(getById('resultedtext').value)">رسم النص الخارج</button>
       <button id=loadfile onclick="getById('openfilebrowse').click()">فتح ملف</button>
-    </div>
-    <div>
       <button onclick="printSuggestedDTEs()">اقترح اختزالات</button>
-    </div>
-  
-    
+
     <hr>
-  
-    <div>
+
+    <nav>
+    <div class=main>
       <canvas id=dialogbox width=300 height=0>متصفحك لا يدعم تعليمة (canvas).</canvas>
     </div>
-    
-    <div>
+    <div class=main>
       <button onclick="displayedPageIndex += 1; drawText(getById('resultedtext').value)"><</button>
       <button onclick="displayedPageIndex -= 1; drawText(getById('resultedtext').value)">></button>
     </div>
-    
+    </nav>
     <hr>
+    </div>
+
+    <nav>
     
     <label>تحويلات النص:</label>
-    <div>
+    <div class=main>
       <label class=checkboxlabel><input id=freeze type=checkbox>جمّده</label>
       <label class=checkboxlabel><input id=unfreeze type=checkbox>انقض تجميده</label>
       <label class=checkboxlabel><input id=cipher type=checkbox>رمّزه</label>
@@ -78,17 +73,17 @@
     </div>
     
     <label>تحويلات إضافية للحركات:</label>
-    <div>
+    <div class=main>
       <label class=checkboxlabel><input id=delharakat type=checkbox>احذفها</label>
       <label class=checkboxlabel><input id=mergeharakat type=checkbox>ادمجها</label>
       <label class=checkboxlabel><input id=offsetharakat type=checkbox>أزحها</label>
       <label class=checkboxlabel><input id=keepfirstharakat type=checkbox>أبق الأولى بالتتالي</label>
       <label class=checkboxlabel><input id=connectharakat type=checkbox>ضع لها تطويلة</label>
     </div>
-    
+
     <hr>
     
-    <div>
+    <div class=main>
       <div><label class=celllabel>تعبير البايت 1:</label><textarea class=cell id=byteform1 placeholder=string>\x<byte></textarea></div>
       <div><label class=celllabel>تعبير البايت 2:</label><textarea class=cell id=byteform2 placeholder=string>{$<byte>}</textarea></div>
       <div><label class=celllabel>تعبير الأوامر:</label><textarea class=cell id=comform placeholder=string>[<command>]</textarea></div>
@@ -109,7 +104,7 @@
     
     <hr>
     
-    <div>
+    <div class=main>
       <div>
         <label class=celllabel>تحويل من:</label>
         <select id="convertfrom">
@@ -174,7 +169,7 @@
     
     <hr>
   
-    <div>
+    <div class=main>
       <div>
         <label class=checkboxlabel><input id=rtl type=checkbox>تدفق النص من اليمين</label>
         <label class=checkboxlabel><input id=boundaries type=checkbox disabled>إظهار صناديق الحدود</label>
@@ -187,7 +182,7 @@
     
   <hr>
   
-  <div>
+  <div class=main>
     <input id=chipertablecheck type=checkbox checked><button id=chipertablebutton onclick="getById('chipertablebrowse').click()">فتح جدول ترميز</button>
     <input id=fonttablecheck type=checkbox checked><button id=fontbutton onclick="getById('fonttablebrowse').click(); getById('fontimgbrowse').click()">فتح خط</button>
   </div>
@@ -197,10 +192,16 @@
   <input type=file id=fonttablebrowse onchange="loadfonttable(event.target.files[0])" accept=".fnt, .aff, .ttf">
   <input type=file name="files" id=fontimgbrowse onchange="loadfontimages(event.target.files)" accept="images/*" multiple>
   <script>enteringTextFunc()</script>
+    
+    </div>
+    </nav>
+    </div>
     </div>
   
   <div id="tableEditor" class="tabcontent">
   <div><label>- محرر جداول الترميز -</label></div>
+  <div>
+    <div class=main id=cipheringTableEditorNav>
   <script>
     var cipheringTableEditor = CreateHTMLTable(17, 17);
     const a = "0123456789ABCDEF"
@@ -212,18 +213,21 @@
     }
     cipheringTableEditor.rows.item(0).cells.item(0).contentEditable = "false";
     cipheringTableEditor = fillCTE(cipheringTableEditor);
-    getById("tableEditor").appendChild(cipheringTableEditor);
+    getById("cipheringTableEditorNav").appendChild(cipheringTableEditor);
   </script>
+      </div>
   
-  <div>
-    <textarea id=CTEcharbox placeholder='صندوق الحروف'></textarea>
-    <script>getById("CTEcharbox").value = FreezedArabicChars+FreezedHarakat;</script>
-  </div>
-  
-  <div>
+    <nav>
+    <div class=main>
+      <textarea class=textbox id=CTEcharbox placeholder='صندوق الحروف'></textarea>
+      <script>getById("CTEcharbox").value = FreezedArabicChars+FreezedHarakat;</script>
+    <div class=main>
+    </div>
       <button id=convert onclick="getById('chipertabletoeditbrowse').click()">فتح جدول</button>
       <button onclick="saveTable('CipheringTable.act', getCharmapFromCTE());">حفظ الجدول act</button>
       <button onclick="saveTable('CipheringTable.tbl', getCharmapFromCTE());">حفظ الجدول tbl</button>
+    </div>
+    </nav>
   </div>
   
   <hr>
