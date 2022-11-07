@@ -1,16 +1,11 @@
-function ConvertTextHex(text, byteform, bytelen, c=true) {
+function HexToText(text, byte1reg) {
   var newtext = '';
-  if (c) {
-    text = text.hexEncode(bytelen);
-    for (i of range(0, text.length, bytelen*2)) {newtext += byteform.replace('<byte>', text.slice(i, i+bytelen*2))}
-  }
-  else {
-    const bytes = text.match(byteform.fixForRegex().replace('<byte>', "[0-9,a-f,A-F]".repeat(bytelen*2)).toRegex('g'));
-    if (!bytes) {return ''}
-    for (b of bytes) {
-      const value = b.slice(byteform.indexOf('<byte>'), byteform.indexOf('<byte>')+bytelen*2);
-      newtext += value.hexDecode(bytelen);
-    }
-  }
+  for (b of text.matchAll(byte1reg.toRegex('g')) || []) {newtext += b[1].hexDecode()}
+  return newtext;
+}
+
+function TextToHex(text, byte2reg) {
+  var newtext = '';
+  for (char of text) {newtext += byte2reg.replace(/\[\\da-fA-F\]\{\d*\}/, char.hexEncode(parseInt([...byte2reg.matchAll(/\{(\d)\}/g)][0][1])/2))}
   return newtext;
 }

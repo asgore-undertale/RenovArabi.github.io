@@ -1,3 +1,3 @@
-function ExtractFromText(text, extractcom, extractedlength) {
-  return (text.match(extractcom.fixForRegex().replaceAll("<text>", "(.+?)").toRegex("g")) || []).filter(x => x.length >= extractedlength[0] && x.length <= extractedlength[1]);
+function ExtractFromText(text, extractreg, extractedlength) {
+  return ([...text.matchAll(extractreg.toRegex("g"))] || []).filter(x => x[1].length >= extractedlength[0] && x[1].length <= extractedlength[1]).map(x => x[1]);
 }

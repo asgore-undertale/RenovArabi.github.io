@@ -23,10 +23,10 @@ function resultingTextFunc() {
 }
 
 function convertText(text) {
-  const byteform1 = getById("byteform1").value;
-  const byteform2 = getById("byteform2").value;
-  const textoffsetcom = getById("textoffsetcom").value;
-  const comform = getById("comform").value;
+  const byte1reg = getById("byte1reg").value;
+  const byte2reg = getById("byte2reg").value;
+  const textoffsetreg = getById("textoffsetreg").value;
+  const commandreg = getById("commandreg").value;
   const linecom = getById("linecom").value;
   const pagecom = getById("pagecom").value;
   const defaultchiperchar = getById("defaultchiperchar").value;
@@ -36,7 +36,7 @@ function convertText(text) {
   const ignoreddtes = getById("ignoreddtes").value;
   const boxsize = getById("boxsize").value.split(',').map(x => parseInt(x));
   const pxbetweenlines = parseInt(getById("pxbetweenlines").value);
-  const extractcom = getById("extractcom").value;
+  const extractreg = getById("extractreg").value;
   const extractedlength = getById("extractedlength").value.split(',').map(x => parseInt(x));
   var _ciphertable = {};
   var _fonttable = {};
@@ -48,7 +48,7 @@ function convertText(text) {
     _fonttable = fonttable
   }
     
-  const commandsRegex = (linecom.fixForRegex()+"|"+pagecom.fixForRegex()+"|"+comform.fixForRegex().replaceAll("<command>", "[\\s\\S]*")+"|"+textoffsetcom.fixForRegex().replaceAll("<px>", "\\d*")).toRegex("g");
+  const commandsRegex = (linecom.fixForRegex()+"|"+pagecom.fixForRegex()+"|"+commandreg+"|"+textoffsetreg).toRegex("g");
   const textlist = text.split(commandsRegex).filter(element => element != undefined);
   const commands = text.match(commandsRegex);
   var newtext = '';
@@ -61,10 +61,10 @@ function convertText(text) {
       continue
     }
     if (getById("extract").checked) {
-      part = ExtractFromText(part, extractcom, extractedlength).join("\n")
+      part = ExtractFromText(part, extractreg, extractedlength).join("\n")
     }
     if (getById("convertfrom").selectedIndex) {
-      part = ConvertTextHex(part, byteform1, getById("inbytelen").selectedIndex + 1, false)
+      part = HexToText(part, byte1reg)
     }
     if (getById("delharakat").checked) {
       part = DelHarakat(part)
@@ -103,22 +103,22 @@ function convertText(text) {
     if (getById("uncompress").checked) {
       part = UncompressText(part)
     }
-    if (getById("unfreeze").checked) {
+    if (getById("unfreeze").checked) { // || getById("uncipher").checked || getById("uncompress").checked
       part = UnFreeze(part)
-    } // || getById("uncipher").checked || getById("uncompress").checked
+    }
     if (getById("convertto").selectedIndex) {
-      part = ConvertTextHex(part, byteform2, getById("outbytelen").selectedIndex + 1)
+      part = TextToHex(part, byte2reg)
     }
     newtext += part;
   }
   if (getById("putinbox").checked) {
-    newtext = FitTextInBox(newtext, _fonttable, boxsize, pxbetweenlines, linecom, pagecom, comform, textoffsetcom)
+    newtext = FitTextInBox(newtext, _fonttable, boxsize, pxbetweenlines, linecom, pagecom, commandreg, textoffsetreg)
   }
   if (getById("offset").selectedIndex) {
     if (getById("offsetwith").selectedIndex) {
-      newtext = OffsetTextWithCommands(newtext, boxsize[0], _fonttable, getById("offset").selectedIndex - 1, textoffsetcom, linecom, pagecom, comform, textoffsetcom)
+      newtext = OffsetTextWithCommands(newtext, boxsize[0], _fonttable, getById("offset").selectedIndex - 1, linecom, pagecom, commandreg, textoffsetreg)
     } else {
-      newtext = OffsetTextWithSpaces(newtext, boxsize[0], _fonttable, getById("offset").selectedIndex - 1, linecom, pagecom, comform, textoffsetcom)
+      newtext = OffsetTextWithSpaces(newtext, boxsize[0], _fonttable, getById("offset").selectedIndex - 1, linecom, pagecom, commandreg, textoffsetreg)
     }
   }
   if (getById('autocopy').checked) {
@@ -137,8 +137,8 @@ function drawText(text) {
   ctx.oImageSmoothingEnabled = false;*/
   const boxsize = getById("boxsize").value.split(',').map(x => parseInt(x));
   const pxbetweenlines = parseInt(getById("pxbetweenlines").value);
-  const textoffsetcom = getById("textoffsetcom").value;
-  const comform = getById("comform").value;
+  const textoffsetreg = getById("textoffsetreg").value;
+  const commandreg = getById("commandreg").value;
   const linecom = getById("linecom").value;
   const pagecom = getById("pagecom").value;
   DialogBox.width = boxsize[0];
@@ -156,7 +156,7 @@ function drawText(text) {
     return ""
   }
 
-  const commandsRegex = (linecom.fixForRegex()+"|"+pagecom.fixForRegex()+"|"+comform.fixForRegex().replaceAll("<command>", "[\\s\\S]*")+"|"+textoffsetcom.fixForRegex().replaceAll("<px>", "\\d*")).toRegex("g");
+  const commandsRegex = (linecom.fixForRegex()+"|"+pagecom.fixForRegex()+"|"+commandreg+"|"+textoffsetreg).toRegex("g");
   const pagescount = (text.match(pagecom.fixForRegex().toRegex("g")) || []).length;
   const page = (text.split(pagecom)).at(displayedPageIndex % (pagescount + 1));
   const textlist = Freeze(page).split(commandsRegex).filter(element => element != undefined);

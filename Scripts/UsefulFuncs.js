@@ -171,7 +171,7 @@ String.prototype.hexEncode = function(bytelen=2) {
   var result = "";
   for (var i of range(0, this.length)) {
     hex = this.charCodeAt(i).toString(16);
-    result += ("000"+hex).slice(-bytelen*2);
+    result += ("0"+"00".repeat(bytelen-1)+hex).slice(-bytelen*2);
   }
   return result
 }
@@ -208,7 +208,11 @@ String.prototype.fixForRegex = function() {
   return this.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
 }
 
-String.prototype.toRegex = function(modifier) { //modifier: gmiu...
+String.prototype.regexToText = function() {
+  return this.replace(/\\[^\\]/g, '$&');
+}
+
+String.prototype.toRegex = function(modifier = '') { //modifier: gmiu...
   return new RegExp(this, modifier);
 }
 

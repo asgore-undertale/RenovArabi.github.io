@@ -77,23 +77,23 @@
           <div class=main>
             <div>
               <label class=celllabel>تعبير البايت 1:</label>
-              <textarea class=cell id=byteform1 placeholder=string>\x<byte></textarea>
+              <textarea class=cell id=byte1reg placeholder=regex>\\x([\da-fA-F]{2})</textarea>
             </div>
             <div>
               <label class=celllabel>تعبير البايت 2:</label>
-              <textarea class=cell id=byteform2 placeholder=string>{$<byte>}</textarea>
+              <textarea class=cell id=byte2reg placeholder=regex>{$[\da-fA-F]{4}}</textarea>
             </div>
             <div>
               <label class=celllabel>تعبير الأوامر:</label>
-              <textarea class=cell id=comform placeholder=string>[<command>]</textarea>
+              <textarea class=cell id=commandreg placeholder=regex>\[.*?\]</textarea>
             </div>
             <div>
               <label class=celllabel>تعبير إزاحة النص:</label>
-              <textarea class=cell id=textoffsetcom placeholder=string>{<px>}</textarea>
+              <textarea class=cell id=textoffsetreg placeholder=regex>\{.*?\}</textarea>
             </div>
             <div>
               <label class=celllabel>تعبير الاستخراج:</label>
-              <textarea class=cell id=extractcom placeholder=string>||<text>||</textarea>
+              <textarea class=cell id=extractreg placeholder=regex>\|(.+?)\|</textarea>
             </div>
             <div><label class=celllabel>أمر السطر:</label><textarea class=cell id=linecom placeholder=string>&line&</textarea></div>
             <div><label class=celllabel>أمر الصفحة:</label><textarea class=cell id=pagecom placeholder=string>&page&</textarea></div>
@@ -124,28 +124,6 @@
               </select>
             </div>
             <div>
-              <label class=celllabel>طول البايت الداخل:</label>
-              <select id="inbytelen">
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </div>
-            <div>
-              <label class=celllabel>طول البايت الخارج:</label>
-              <select id="outbytelen">
-                <option>1</option>
-                <option selected>2</option>
-              </select>
-            </div>
-            <div>
-              <label class=celllabel>المفقود من الترميز:</label>
-              <select id="notinchipertable">
-                <option>يترك على حاله</option>
-                <option>يعوض بالرمز الافتراضي</option>
-                <option>يحذف</option>
-              </select>
-            </div>
-            <div>
               <label class=celllabel>إزاحة النص:</label>
               <select id="offset">
                 <option>اترك النص على حاله</option>
@@ -163,6 +141,14 @@
               </select>
             </div>
             <div>
+              <label class=celllabel>المفقود من الترميز:</label>
+              <select id="notinchipertable">
+                <option>يترك على حاله</option>
+                <option>يعوض بالرمز الافتراضي</option>
+                <option>يحذف</option>
+              </select>
+            </div>
+            <div>
               <label class=celllabel>سكربتات تحويل:</label>
               <select id="conertingscripts" disabled>
                 <option>...</option>
@@ -173,10 +159,7 @@
           <hr>
           <div class=main>
             <div>
-              <label class=checkboxlabel><input id=rtl type=checkbox>تدفق النص من اليمين</label>
-              <label class=checkboxlabel><input id=boundaries type=checkbox disabled>إظهار حدود الحروف</label>
-            </div>
-            <div>
+              <label class=checkboxlabel><input id=rtl type=checkbox>سريان من اليمين</label>
               <label class=checkboxlabel><input id=autoconvert type=checkbox checked>تحويل تلقائي</label>
               <label class=checkboxlabel><input id=autocopy type=checkbox>نسخ تلقائي</label>
             </div>
@@ -215,13 +198,11 @@
         </div>
         <nav>
           <div class=main>
-            <textarea class=textbox id=CTEcharbox placeholder='صندوق الحروف'></textarea>
-            <script>getById("CTEcharbox").value = FreezedArabicChars+FreezedHarakat;</script>
-            <div class=main>
-            </div>
             <button id=convert onclick="getById('chipertabletoeditbrowse').click()">فتح جدول</button>
             <button onclick="saveTable('CipheringTable.act', getCharmapFromCTE());">حفظ الجدول act</button>
             <button onclick="saveTable('CipheringTable.tbl', getCharmapFromCTE());">حفظ الجدول tbl</button>
+            <textarea class=textbox id=CTEcharbox placeholder='صندوق الحروف'></textarea>
+            <script>getById("CTEcharbox").value = FreezedArabicChars+FreezedHarakat;</script>
           </div>
         </nav>
       </div>

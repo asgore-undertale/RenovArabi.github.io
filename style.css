@@ -61,11 +61,11 @@ label {
 }
 
 label.checkboxlabel {
-  width: 130px;
+  width: 110px;
 }
 
 label.celllabel {
-  width: 100px;
+  width: 105px;
 }
 
 input[type="file"] {

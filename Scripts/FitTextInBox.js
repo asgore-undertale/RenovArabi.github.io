@@ -14,7 +14,7 @@ function getTextWidth(text, fonttable, boxwidth) {
   return width * fonttable.scale
 }
 
-function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom, comform, textoffsetcom) {
+function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom, commandreg, textoffsetreg) {
   if (Object.keys(fonttable).length < 4) {
     return text
   }
@@ -22,7 +22,7 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
     return ""
   }
   
-  const commandsRegex = (linecom.fixForRegex()+"|"+pagecom.fixForRegex()+"|"+comform.fixForRegex().replaceAll("<command>", "[\\s\\S]*")+"|"+textoffsetcom.fixForRegex().replaceAll("<px>", "\\d*")).toRegex("g");
+  const commandsRegex = (linecom.fixForRegex()+"|"+pagecom.fixForRegex()+"|"+commandreg+"|"+textoffsetcom).toRegex("g");
   const textlist = text.split(commandsRegex).filter(element => element != undefined);
   const commands = text.match(commandsRegex);
   var newtext = '',
