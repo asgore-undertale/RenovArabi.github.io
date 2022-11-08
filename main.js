@@ -315,14 +315,14 @@ function createTTE(row = 1, col = 3) { //TranslatingTableEditor
 async function loadFileToTTE(file) {
   translatedFile = file;
   fileContent = await readFile(file);
-  const textList = [...fileContent.matchAll(getById("oritextreg").value.toRegex("g"))];
-  const transList = [...fileContent.matchAll(getById("transtextreg").value.toRegex("g"))];
+  const textList = fileContent.match(getById("oritextreg").value.toRegex("g"));
+  const transList = fileContent.match(getById("transtextreg").value.toRegex("g"));
   try {getById("filetranslator").removeChild(fileTranslatorTable)}
   catch(err) {document.innerHTML = err.message}
   fileTranslatorTable = createTTE(max(textList.length, transList.length) + 1);
-  for (t of range(0, textList.length)) {
-    fileTranslatorTable.rows.item(t + 1).cells.item(1).innerHTML = textList[t][1];
-    fileTranslatorTable.rows.item(t + 1).cells.item(2).innerHTML = transList[t][1];
+  for (t of range(0, max(textList.length, transList.length))) {
+    fileTranslatorTable.rows.item(t + 1).cells.item(1).innerHTML = textList[t] || "";
+    fileTranslatorTable.rows.item(t + 1).cells.item(2).innerHTML = transList[t] || "";
   }
   getById("filetranslator").appendChild(fileTranslatorTable);
 }
@@ -330,7 +330,7 @@ async function loadFileToTTE(file) {
 async function saveTranslatedFile() {
   var content = await readFile(translatedFile);
   for (r of range(1, fileTranslatorTable.rows.length - 1)) {
-    content = content.replace(fileTranslatorTable.rows.item(r).cells.item(0).innerHTML, fileTranslatorTable.rows.item(r).cells.item(1).innerHTML);
+    content = content.replace(fileTranslatorTable.rows.item(r).cells.item(0).innerHTML.fixForRegex(), fileTranslatorTable.rows.item(r).cells.item(1).innerHTML);
   }
   content.downloadAsFile(translatedFile.name);
 }
