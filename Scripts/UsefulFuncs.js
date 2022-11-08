@@ -37,9 +37,7 @@ async function readFile(file) {
   const reader = new FileReader();
   reader.readAsText(file);
   const result = await new Promise((resolve, reject) => {
-    reader.onload = function(event) {
-    resolve(reader.result)
-    }
+    reader.onload = function(event) {resolve(reader.result)}
   })
   return result
 }
@@ -206,10 +204,6 @@ String.prototype.subs = function(sublen=0) {
 
 String.prototype.fixForRegex = function() {
   return this.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
-}
-
-String.prototype.regexToText = function() {
-  return this.replace(/\\[^\\]/g, '$&');
 }
 
 String.prototype.toRegex = function(modifier = '') { //modifier: gmiu...

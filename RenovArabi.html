@@ -76,24 +76,24 @@
           <hr>
           <div class=main>
             <div>
-              <label class=celllabel>تعبير البايت 1:</label>
-              <textarea class=cell id=byte1reg placeholder=regex>\\x([\da-fA-F]{2})</textarea>
-            </div>
-            <div>
-              <label class=celllabel>تعبير البايت 2:</label>
-              <textarea class=cell id=byte2reg placeholder=regex>{$[\da-fA-F]{4}}</textarea>
+              <label class=celllabel>تعبير الاستخراج:</label>
+              <textarea class=cell id=extractreg placeholder=regex>\|(.+?)\|</textarea>
             </div>
             <div>
               <label class=celllabel>تعبير الأوامر:</label>
               <textarea class=cell id=commandreg placeholder=regex>\[.*?\]</textarea>
             </div>
             <div>
-              <label class=celllabel>تعبير إزاحة النص:</label>
-              <textarea class=cell id=textoffsetreg placeholder=regex>\{.*?\}</textarea>
+              <label class=celllabel>تعبير البايت الداخل:</label>
+              <textarea class=cell id=inbytercom placeholder=string>\x<byte1></textarea>
             </div>
             <div>
-              <label class=celllabel>تعبير الاستخراج:</label>
-              <textarea class=cell id=extractreg placeholder=regex>\|(.+?)\|</textarea>
+              <label class=celllabel>تعبير البايت الخارج:</label>
+              <textarea class=cell id=outbytecom placeholder=string>{$<byte2>}</textarea>
+            </div>
+            <div>
+              <label class=celllabel>تعبير إزاحة النص:</label>
+              <textarea class=cell id=textoffsetcom placeholder=string>{<px>px}</textarea>
             </div>
             <div><label class=celllabel>أمر السطر:</label><textarea class=cell id=linecom placeholder=string>&line&</textarea></div>
             <div><label class=celllabel>أمر الصفحة:</label><textarea class=cell id=pagecom placeholder=string>&page&</textarea></div>
@@ -113,14 +113,14 @@
               <label class=celllabel>تحويل من:</label>
               <select id="convertfrom">
                 <option>الأشكال الطباعية</option>
-                <option>تعبير البايت 1</option>
+                <option>تعبير البايت الداخل</option>
               </select>
             </div>
             <div>
               <label class=celllabel>إلى:</label>
               <select id="convertto">
                 <option>الأشكال الطباعية</option>
-                <option>تعبير البايت 2</option>
+                <option>تعبير البايت الخارج</option>
               </select>
             </div>
             <div>
@@ -183,16 +183,7 @@
       <div>
         <div class=main id=cipheringTableEditorNav>
           <script>
-            var cipheringTableEditor = CreateHTMLTable(17, 17);
-            const a = "0123456789ABCDEF"
-            for (var i of range(0, a.length)) {
-              cipheringTableEditor.rows.item(i+1).cells.item(0).innerHTML = `<b>${a[i]}0</b>`;
-              cipheringTableEditor.rows.item(i+1).cells.item(0).contentEditable = "false";
-              cipheringTableEditor.rows.item(0).cells.item(i+1).innerHTML = `<b>${a[i]}</b>`;
-              cipheringTableEditor.rows.item(0).cells.item(i+1).contentEditable = "false";
-            }
-            cipheringTableEditor.rows.item(0).cells.item(0).contentEditable = "false";
-            cipheringTableEditor = fillCTE(cipheringTableEditor);
+            var cipheringTableEditor = createCTE();
             getById("cipheringTableEditorNav").appendChild(cipheringTableEditor);
           </script>
         </div>
@@ -215,19 +206,24 @@
     <script>getById("defaultTab").click();</script>
     <div id="filetranslator" class="tabcontent">
       <div>
+        <div>
+          <label class=celllabel>ريجيكس الأصلي:</label>
+          <textarea class=cell id=oritextreg placeholder=regex>"(.+?)"</textarea>
+        </div>
+        <div>
+          <label class=celllabel>ريجيكس الترجمة:</label>
+          <textarea class=cell id=transtextreg placeholder=regex>"(.+?)"</textarea>
+        </div>
+      </div>
+      <div>
         <button onclick="getById('fileftansbrowse').click()">فتح ملف</button>
         <button onclick="saveTranslatedFile()">حفظ الملف</button>
       </div>
       <script>
-        var fileTranslatorTable = CreateHTMLTable(1, 2);
-        fileTranslatorTable.rows.item(0).cells.item(0).innerHTML = "<b>الأصلي</b>";
-        fileTranslatorTable.rows.item(0).cells.item(1).innerHTML = "<b>الترجمة</b>";
-        fileTranslatorTable.rows.item(0).cells.item(0).contentEditable = "false";
-        fileTranslatorTable.rows.item(0).cells.item(1).contentEditable = "false";
-        
+        var fileTranslatorTable = createTTE();
         getById("filetranslator").appendChild(fileTranslatorTable);
       </script>
-      <input type=file id=fileftansbrowse onchange="loadFileToTranslate(event.target.files[0])">
+      <input type=file id=fileftansbrowse onchange="loadFileToTTE(event.target.files[0])">
     </div>
   </body>
 </html>

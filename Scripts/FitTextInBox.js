@@ -14,7 +14,7 @@ function getTextWidth(text, fonttable, boxwidth) {
   return width * fonttable.scale
 }
 
-function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom, commandreg, textoffsetreg) {
+function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom, commandreg, textoffsetcom) {
   if (Object.keys(fonttable).length < 4) {
     return text
   }
@@ -22,7 +22,8 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
     return ""
   }
   
-  const commandsRegex = (linecom.fixForRegex()+"|"+pagecom.fixForRegex()+"|"+commandreg+"|"+textoffsetcom).toRegex("g");
+  const commandsRegex = (linecom.fixForRegex()+"|"+pagecom.fixForRegex()+"|"+commandreg+"|"+textoffsetcom.fixForRegex().replace("<px>", ".*?")).toRegex("g");
+  const textoffsetreg = textoffsetcom.fixForRegex().replace("<px>", "(.*?)").toRegex();
   const textlist = text.split(commandsRegex).filter(element => element != undefined);
   const commands = text.match(commandsRegex);
   var newtext = '',
@@ -34,22 +35,26 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
     if (p) {
       const com = commands[p - 1];
       if (com == linecom) {
-        x = 0
+        x = 0;
         y += fonttable.fontsize + pxbetweenlines;
         if (y + fonttable.fontsize > boxsize[1]) {
           y = 0;
-          newtext += pagecom
+          newtext += pagecom;
         }
         else {
-          newtext += linecom
+          newtext += com;
         }
       }
       else if (com == pagecom) {
         x = 0, y = 0;
-        newtext += pagecom
+        newtext += com;
+      }
+      else if (textoffsetreg.test(com)) {
+        x += parseFloat(com.match(/\d+/));
+        newtext += com;
       }
       else {
-        newtext += commands[(p - 1) / 2]
+        newtext += com;
       }
     }
     if (!part.length) {

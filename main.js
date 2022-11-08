@@ -23,9 +23,9 @@ function resultingTextFunc() {
 }
 
 function convertText(text) {
-  const byte1reg = getById("byte1reg").value;
-  const byte2reg = getById("byte2reg").value;
-  const textoffsetreg = getById("textoffsetreg").value;
+  const inbytercom = getById("inbytercom").value;
+  const outbytecom = getById("outbytecom").value;
+  const textoffsetcom = getById("textoffsetcom").value;
   const commandreg = getById("commandreg").value;
   const linecom = getById("linecom").value;
   const pagecom = getById("pagecom").value;
@@ -48,7 +48,7 @@ function convertText(text) {
     _fonttable = fonttable
   }
     
-  const commandsRegex = (linecom.fixForRegex()+"|"+pagecom.fixForRegex()+"|"+commandreg+"|"+textoffsetreg).toRegex("g");
+  const commandsRegex = (linecom.fixForRegex()+"|"+pagecom.fixForRegex()+"|"+commandreg+"|"+textoffsetcom.fixForRegex().replace("<px>", ".*?")).toRegex("g");
   const textlist = text.split(commandsRegex).filter(element => element != undefined);
   const commands = text.match(commandsRegex);
   var newtext = '';
@@ -64,7 +64,7 @@ function convertText(text) {
       part = ExtractFromText(part, extractreg, extractedlength).join("\n")
     }
     if (getById("convertfrom").selectedIndex) {
-      part = HexToText(part, byte1reg)
+      part = HexToText(part, inbytercom)
     }
     if (getById("delharakat").checked) {
       part = DelHarakat(part)
@@ -107,18 +107,18 @@ function convertText(text) {
       part = UnFreeze(part)
     }
     if (getById("convertto").selectedIndex) {
-      part = TextToHex(part, byte2reg)
+      part = TextToHex(part, outbytecom)
     }
     newtext += part;
   }
   if (getById("putinbox").checked) {
-    newtext = FitTextInBox(newtext, _fonttable, boxsize, pxbetweenlines, linecom, pagecom, commandreg, textoffsetreg)
+    newtext = FitTextInBox(newtext, _fonttable, boxsize, pxbetweenlines, linecom, pagecom, commandreg, textoffsetcom)
   }
   if (getById("offset").selectedIndex) {
     if (getById("offsetwith").selectedIndex) {
-      newtext = OffsetTextWithCommands(newtext, boxsize[0], _fonttable, getById("offset").selectedIndex - 1, linecom, pagecom, commandreg, textoffsetreg)
+      newtext = OffsetTextWithCommands(newtext, boxsize[0], _fonttable, getById("offset").selectedIndex - 1, linecom, pagecom, commandreg, textoffsetcom)
     } else {
-      newtext = OffsetTextWithSpaces(newtext, boxsize[0], _fonttable, getById("offset").selectedIndex - 1, linecom, pagecom, commandreg, textoffsetreg)
+      newtext = OffsetTextWithSpaces(newtext, boxsize[0], _fonttable, getById("offset").selectedIndex - 1, linecom, pagecom, commandreg, textoffsetcom)
     }
   }
   if (getById('autocopy').checked) {
@@ -130,14 +130,9 @@ function convertText(text) {
 function drawText(text) {
   const DialogBox = getById('dialogbox');
   const ctx = DialogBox.getContext('2d');
-  /*ctx.webkitImageSmoothingEnabled = false;
-  ctx.mozImageSmoothingEnabled = false;
-  ctx.imageSmoothingEnabled = false;
-  ctx.msImageSmoothingEnabled = false;
-  ctx.oImageSmoothingEnabled = false;*/
   const boxsize = getById("boxsize").value.split(',').map(x => parseInt(x));
   const pxbetweenlines = parseInt(getById("pxbetweenlines").value);
-  const textoffsetreg = getById("textoffsetreg").value;
+  const textoffsetcom = getById("textoffsetcom").value;
   const commandreg = getById("commandreg").value;
   const linecom = getById("linecom").value;
   const pagecom = getById("pagecom").value;
@@ -156,7 +151,8 @@ function drawText(text) {
     return ""
   }
 
-  const commandsRegex = (linecom.fixForRegex()+"|"+pagecom.fixForRegex()+"|"+commandreg+"|"+textoffsetreg).toRegex("g");
+  const commandsRegex = (linecom.fixForRegex()+"|"+pagecom.fixForRegex()+"|"+commandreg+"|"+textoffsetcom.fixForRegex().replace("<px>", ".*?")).toRegex("g");
+  const textoffsetreg = textoffsetcom.fixForRegex().replace("<px>", "(.*?)").toRegex();
   const pagescount = (text.match(pagecom.fixForRegex().toRegex("g")) || []).length;
   const page = (text.split(pagecom)).at(displayedPageIndex % (pagescount + 1));
   const textlist = Freeze(page).split(commandsRegex).filter(element => element != undefined);
@@ -175,6 +171,9 @@ function drawText(text) {
         }
       } else if (com == pagecom) {
         x = 0, y = 0
+      }
+      else if (textoffsetreg.test(com)) {
+        x += parseFloat(com.match(/\d+/));
       }
     }
     for (char of part) {
@@ -230,13 +229,27 @@ async function loadTextFile(file) {
   getById('enteredtext').value = await readFile(file);
 }
 
+function createCTE() {
+  var cipheringTableEditor = CreateHTMLTable(17, 17);
+  const a = "0123456789ABCDEF"
+  for (var i of range(0, a.length)) {
+    cipheringTableEditor.rows.item(i+1).cells.item(0).innerHTML = `<b>${a[i]}0</b>`;
+    cipheringTableEditor.rows.item(i+1).cells.item(0).contentEditable = "false";
+    cipheringTableEditor.rows.item(0).cells.item(i+1).innerHTML = `<b>${a[i]}</b>`;
+    cipheringTableEditor.rows.item(0).cells.item(i+1).contentEditable = "false";
+  }
+  cipheringTableEditor.rows.item(0).cells.item(0).contentEditable = "false";
+  cipheringTableEditor = fillCTE(cipheringTableEditor);
+  return cipheringTableEditor;
+}
+
 function fillCTE(table) { // CipheringTableEditor
   for (var i of range(0, 16)) {
     for (var j of range(0, 16)) {
       //table.rows.item(i+1).cells.item(j+1).innerText = (table.rows.item(0).cells.item(0).innerText + ((i)*16 + (j)).toString(16)).hexDecode();
     }
   }
-  return table
+  return table;
 }
 
 async function loadTableForCTE(file) {
@@ -283,17 +296,34 @@ function printSuggestedDTEs() {
   prompt("الاختزالات من الأكثر وروداً للأقل:", "(" + SuggestDTE(text, dteLengths, resultsNum).join(") (") + ")");
 }
 
-async function loadFileToTranslate(file) {
+function createTTE(row = 1, col = 3) { //TranslatingTableEditor
+  var fileTranslatorTable = CreateHTMLTable(row, col);
+  fileTranslatorTable.rows.item(0).cells.item(0).innerHTML = "<b>رقم</b>";
+  fileTranslatorTable.rows.item(0).cells.item(0).contentEditable = "false";
+  fileTranslatorTable.rows.item(0).cells.item(0).style.width = '70px';
+  fileTranslatorTable.rows.item(0).cells.item(1).innerHTML = "<b>الأصلي</b>";
+  fileTranslatorTable.rows.item(0).cells.item(1).contentEditable = "false";
+  fileTranslatorTable.rows.item(0).cells.item(2).innerHTML = "<b>الترجمة</b>";
+  fileTranslatorTable.rows.item(0).cells.item(2).contentEditable = "false";
+  for (i of range(1, row)) {
+    fileTranslatorTable.rows.item(i).cells.item(0).innerHTML = `<b>${i}</b>`;
+    fileTranslatorTable.rows.item(i).cells.item(0).contentEditable = "false";
+  }
+  return fileTranslatorTable;
+}
+
+async function loadFileToTTE(file) {
   translatedFile = file;
   fileContent = await readFile(file);
-  const textList = fileContent.match(/(.*?)\n/g);
-  const transList = fileContent.match(/(.*?)\n/g);
-  fileTranslatorTable = CreateHTMLTable(textList.length + 1, 2);
+  const textList = [...fileContent.matchAll(getById("oritextreg").value.toRegex("g"))];
+  const transList = [...fileContent.matchAll(getById("transtextreg").value.toRegex("g"))];
+  try {getById("filetranslator").removeChild(fileTranslatorTable)}
+  catch(err) {document.innerHTML = err.message}
+  fileTranslatorTable = createTTE(max(textList.length, transList.length) + 1);
   for (t of range(0, textList.length)) {
-    fileTranslatorTable.rows.item(t + 1).cells.item(0).innerHTML = textList[t];
-    fileTranslatorTable.rows.item(t + 1).cells.item(1).innerHTML = textList[t];
+    fileTranslatorTable.rows.item(t + 1).cells.item(1).innerHTML = textList[t][1];
+    fileTranslatorTable.rows.item(t + 1).cells.item(2).innerHTML = transList[t][1];
   }
-  getById("filetranslator").removeChild(fileTranslatorTable);
   getById("filetranslator").appendChild(fileTranslatorTable);
 }
 
