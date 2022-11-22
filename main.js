@@ -181,10 +181,9 @@ function drawText(text) {
         continue
       }
       const chardata = _fonttable[char];
-      const X = ((DialogBox.width - x - (chardata.w + chardata.xoff) * fonttable.scale) * getById('rtl').checked) + ((x + chardata.xoff * fonttable.scale) * !getById('rtl').checked);
+      const X = ((DialogBox.width - x + (chardata.xoff - chardata.w) * fonttable.scale) * getById('rtl').checked) + ((x + chardata.xoff * fonttable.scale) * !getById('rtl').checked);
       const Y = y + chardata.yoff * _fonttable.scale;
       if (_fonttable.type == "aff") {
-        console.log(chardata.xoff, chardata.yoff, chardata.xadv)
         for (i of range(0, chardata.drawData.length)) {
           for (j of range(0, chardata.drawData[i].length)) {
             if (chardata.drawData[i][j] == " ") {

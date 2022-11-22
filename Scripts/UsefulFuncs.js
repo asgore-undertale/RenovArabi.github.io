@@ -43,8 +43,7 @@ async function readFile(file) {
 }
 
 async function loadImage(file) {
-  event.preventDefault();
-  if (event.target.files[0] === undefined) {return}
+  if (file === undefined) {return}
   let reader = new FileReader();
   reader.readAsDataURL(file)
   const result = await new Promise((resolve, reject) => {
@@ -82,8 +81,6 @@ function CreateHTMLTable(row, col) {
     for(let j = 0; j < col; j++) {
       let td = tr.insertCell();
       td.contentEditable = "true";
-      //td.placeholder = "a";
-      //td.setAttribute("placeholder", "a")
     }
   }
   return tbl
@@ -97,6 +94,30 @@ function clearHTMLtable(table, startpoint) {
   }
   return table
 }
+
+// class HTML3DTable {
+  // constructor(row, col, lay) {
+    // this.layers = document.createElement('div');
+	// this.index = 0;
+	
+    // this.cell = document.createElement('textarea');
+	// this.cell.class = "cell";
+	// this.cell.oninput = "showLay(parseInt(this.value));";
+    // this.layers.appendChild(this.cell);
+	
+    // for (const i of range(0, lay)) {
+	  // var tbl = CreateHTMLTable(row, col);
+	  // tbl.style.display = "none";
+      // this.layers.appendChild(tbl);
+	// }
+  // }
+  
+  // showLay(i = 0) {
+    // this.layers.childNodes.item(this.index+1).display = "none";
+    // this.layers.childNodes.item(i+1).display = "block";
+	// this.index = i;
+  // }
+// }
 
 function min(a, b) {
   return a > b? b : a;

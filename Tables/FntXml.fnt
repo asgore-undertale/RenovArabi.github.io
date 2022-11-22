@@ -247,7 +247,7 @@
     <char id="65259" x="1625" y="73" width="36" height="29" xoffset="-1" yoffset="15" xadvance="0" page="1" chnl="15" />
     <char id="65260" x="1584" y="74" width="40" height="29" xoffset="0" yoffset="15" xadvance="0" page="1" chnl="15" />
     <char id="65261" x="1490" y="74" width="21" height="30" xoffset="2" yoffset="22" xadvance="0" page="1" chnl="15" />
-    <char id="65262" x="1461" y="74" width="28" height="30" xoffset="-2" yoffset="22" xadvance="0" page="1" chnl="15" />
+    <char id="65262" x="1461" y="74" width="28" height="30" xoffset="2" yoffset="22" xadvance="0" page="1" chnl="15" />
     <char id="65263" x="1109" y="41" width="34" height="33" xoffset="1" yoffset="19" xadvance="0" page="1" chnl="15" />
     <char id="65264" x="1876" y="73" width="43" height="25" xoffset="1" yoffset="27" xadvance="0" page="1" chnl="15" />
     <char id="65265" x="449" y="0" width="34" height="44" xoffset="1" yoffset="19" xadvance="0" page="1" chnl="15" />
