@@ -238,7 +238,7 @@ function createCTE() {
     cipheringTableEditor.rows.item(0).cells.item(i+1).contentEditable = "false";
   }
   cipheringTableEditor.rows.item(0).cells.item(0).contentEditable = "false";
-  cipheringTableEditor = fillCTE(cipheringTableEditor);
+  // cipheringTableEditor = fillCTE(cipheringTableEditor);
   return cipheringTableEditor;
 }
 
