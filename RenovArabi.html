@@ -27,6 +27,7 @@
       <button class="tablinks" onclick="openTab(event, 'tableEditor')">محرر الجداول</button>
       <button class="tablinks" onclick="openTab(event, 'filetranslator')">مترجم الملفات</button>
       <button class="tablinks" onclick="openTab(event, 'extractor&enteror')">المدخل والمستخرج</button>
+      <button class="tablinks" onclick="openTab(event, '??')">؟؟</button>
     </div>
     <div id="textConverter" class="tabcontent">
       <div>
@@ -203,7 +204,6 @@
       <div><label>- منتج جداول aff -</label></div>
       <input type=file id=chipertabletoeditbrowse onchange="loadTableForCTE(event.target.files[0])" accept=".act, .tbl, .zts, .zta">
     </div>
-    <script>getById("defaultTab").click();</script>
     <div id="filetranslator" class="tabcontent">
       <div>
         <div>
@@ -225,5 +225,35 @@
       </script>
       <input type=file id=fileftansbrowse onchange="loadFileToTTE(event.target.files[0])">
     </div>
+    <div id="??" class="tabcontent">
+	<b>
+    صنع هذه الأداة: <a href="https://github.com/asgore-undertale" target="_blank">آسغور</a>.<br>
+    وشكر خاص للأخ <a href="https://twitter.com/MansourSorosoro" target="_blank">منصور</a> لتقديمه معظم أفكار الأداة.<br>
+    <br>
+    معلومات مهمة:<br>
+    |- تأكد من فتح الكونسول.<br>
+    |- التجميد تلقائي عند التجميد والاختزال لكن ليس عند نقضهما.<br>
+    |- ترتيب عمليات التحويل:<br>
+    |-- + الاستخراج.<br>
+    |-- + تحويل البايتات لنص.<br>
+    |-- + حذف الحركات.<br>
+    |-- + دمج الحركات.<br>
+    |-- + إزاحة الحركات.<br>
+    |-- + إبقاء أول حركة.<br>
+    |-- + إضافة تطويلة للحركات.<br>
+    |-- + التجميد.<br>
+    |-- + الاختزال.<br>
+    |-- + عكس النص كاملاً.<br>
+    |-- + عكس العربية.<br>
+    |-- + ترميز.<br>
+    |-- + نقض الترميز.<br>
+    |-- + نقض الاختزال.<br>
+    |-- + نقض التجميد.<br>
+    |-- + تحويل النص لبايتات.<br>
+    |-- + وضع النص في صندوق.<br>
+    |-- + إزاحة أسطر النص في الصندوق.<br>
+	</b>
+    </div>
+    <script>getById("defaultTab").click();</script>
   </body>
 </html>
