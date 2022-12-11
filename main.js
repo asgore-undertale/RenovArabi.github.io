@@ -37,7 +37,6 @@ function convertText(text) {
   const boxsize = getById("boxsize").value.split(',').map(x => parseInt(x));
   const pxbetweenlines = parseInt(getById("pxbetweenlines").value);
   const extractreg = getById("extractreg").value;
-  const extractedlength = getById("extractedlength").value.split(',').map(x => parseInt(x));
   var _ciphertable = {};
   var _fonttable = {};
   if (getById("chipertablecheck").checked) {
@@ -61,7 +60,7 @@ function convertText(text) {
       continue
     }
     if (getById("extract").checked) {
-      part = ExtractFromText(part, extractreg, extractedlength).join("\n")
+      part = ExtractFromText(part, extractreg).join("\n")
     }
     if (getById("convertfrom").selectedIndex) {
       part = HexToText(part, inbytercom)
@@ -95,10 +94,10 @@ function convertText(text) {
       part = ReverseArabic(part)
     }
     if (getById("cipher").checked) {
-      part = Cipher(part, _ciphertable, defaultchiperchar, false, getById('notinchipertable').selectedIndex)
+      part = Cipher(part, _ciphertable, defaultchiperchar, false, getById('notinciphertable').selectedIndex)
     }
     if (getById("uncipher").checked) {
-      part = Cipher(part, _ciphertable, defaultchiperchar, true, getById('notinchipertable').selectedIndex)
+      part = Cipher(part, _ciphertable, defaultchiperchar, true, getById('notinciphertable').selectedIndex)
     }
     if (getById("uncompress").checked) {
       part = UncompressText(part)
@@ -300,7 +299,7 @@ function createTTE(row = 1, col = 3) { //TranslatingTableEditor
   fileTranslatorTable.rows.item(0).cells.item(0).innerHTML = "<b>رقم</b>";
   fileTranslatorTable.rows.item(0).cells.item(0).contentEditable = "false";
   fileTranslatorTable.rows.item(0).cells.item(0).style.width = '70px';
-  fileTranslatorTable.rows.item(0).cells.item(1).innerHTML = "<b>الأصلي</b>";
+  fileTranslatorTable.rows.item(0).cells.item(1).innerHTML = "<b>النص</b>";
   fileTranslatorTable.rows.item(0).cells.item(1).contentEditable = "false";
   fileTranslatorTable.rows.item(0).cells.item(2).innerHTML = "<b>الترجمة</b>";
   fileTranslatorTable.rows.item(0).cells.item(2).contentEditable = "false";
@@ -332,4 +331,10 @@ async function saveTranslatedFile() {
     content = content.replace(fileTranslatorTable.rows.item(r).cells.item(0).innerHTML.fixForRegex(), fileTranslatorTable.rows.item(r).cells.item(1).innerHTML);
   }
   content.downloadAsFile(translatedFile.name);
+}
+
+function translateGUI(lang) {
+  for (const [k, v] of Object.entries(GuiText[lang])) {
+    getById(k).innerHTML = v;
+  }
 }

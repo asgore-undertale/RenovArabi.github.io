@@ -21,7 +21,8 @@ div {
 
 button {
   margin: 2px;
-  width: 32%;
+  /* width: 32%; */
+  padding: 0 15px;
   height: 24px;
   font-weight: bold;
 }
@@ -34,7 +35,7 @@ textarea {
 textarea.textbox {
   display: block;
   margin: 2px;
-  height: calc(50vh - 96px);
+  height: calc(50vh - 132px);
   font-size: 18px;
   font-weight: bold;
 }
