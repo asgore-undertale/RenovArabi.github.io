@@ -1,5 +1,5 @@
 const GuiText = {
-  "Arabic":  {
+  "Arabic": {
     "textConverterTab": "محول النصوص",
     "tableEditorTab": "محرر الجداول",
     "filetranslatorTab": "مترجم الملفات",
@@ -81,7 +81,7 @@ const GuiText = {
 	"filetranslatorsavefile": "حفظ الملف",
 	"about": "<b>صنع هذه الأداة: <a href='https://github.com/asgore-undertale' target='_blank'>آسغور</a>.<br>وشكر خاص للأخ <a href='https://twitter.com/MansourSorosoro' target='_blank'>منصور</a> لتقديمه معظم أفكار الأداة.<br><br>معلومات مهمة:<br>|- تأكد من فتح الكونسول.<br>|- التجميد تلقائي عند التجميد والاختزال لكن ليس عند نقضهما.<br>|- ترتيب عمليات التحويل:<br>|-- + الاستخراج.<br>|-- + تحويل البايتات لنص.<br>|-- + حذف الحركات.<br>|-- + دمج الحركات.<br>|-- + إزاحة الحركات.<br>|-- + إبقاء أول حركة.<br>|-- + إضافة تطويلة للحركات.<br>|-- + التجميد.<br>|-- + الاختزال.<br>|-- + عكس النص كاملاً.<br>|-- + عكس العربية.<br>|-- + ترميز.<br>|-- + نقض الترميز.<br>|-- + نقض الاختزال.<br>|-- + نقض التجميد.<br>|-- + تحويل النص لبايتات.<br>|-- + وضع النص في صندوق.<br>|-- + إزاحة النص.<br></b>",
   },
-  "English":  {
+  "English": {
     "textConverterTab": "Text Converter",
     "tableEditorTab": "Table Editor",
     "filetranslatorTab": "Files Translator",

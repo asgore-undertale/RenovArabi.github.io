@@ -338,3 +338,11 @@ function translateGUI(lang) {
     getById(k).innerHTML = v;
   }
 }
+
+function RTLpage() {
+	document.getElementById('page').setAttribute("dir", "rtl");
+}
+
+function LTRpage() {
+	document.getElementById('page').setAttribute("dir", "ltr");
+}

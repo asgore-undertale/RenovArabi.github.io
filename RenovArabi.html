@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html id="page" dir="rtl" lang="ar">
   <script src="Scripts/Vars.js"></script>
   <script src="Scripts/UsefulFuncs.js"></script>
   <script src="Scripts/CipherText.js"></script>
@@ -20,12 +20,11 @@
     <title>RenovArabi v1.01.00</title> <!-- massive update.small updates.fixes-->
     <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="style.css"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
     <div class="tab">
-      <button onclick="translateGUI('Arabic')">العربية</button>
-      <button onclick="translateGUI('English')">English</button>
+      <button onclick="translateGUI('Arabic'); RTLpage();">العربية</button>
+      <button onclick="translateGUI('English'); LTRpage();">English</button>
     </div>
     <div class="tab">
       <button class="tablinks" id="textConverterTab" onclick="openTab(event, 'textConverter')">محول النصوص</button>

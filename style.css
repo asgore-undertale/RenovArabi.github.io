@@ -1,3 +1,12 @@
+:root {
+  --bg-color: #f6f6ff;
+  --border-color: #ccc;
+}
+
+body {
+  background-color: var(--bg-color);
+}
+
 div {
   margin: 3px;
   display: flex;
@@ -28,14 +37,20 @@ button {
 }
 
 textarea {
+  border-color: var(--border-color);
   width: 100%;
   resize: none;
 }
 
+select {
+  border-color: var(--border-color);
+}
+
 textarea.textbox {
   display: block;
+  padding: 8px;
   margin: 2px;
-  height: calc(50vh - 132px);
+  height: calc(50vh - 137px);
   font-size: 18px;
   font-weight: bold;
 }
@@ -43,8 +58,8 @@ textarea.textbox {
 textarea.cell {
   direction: ltr;
   margin-left: 2px;
-  width: 83px;
-  height: 16px;
+  width: 89px;
+  height: 22px;
   font-weight: bold;
 }
 
@@ -101,6 +116,7 @@ canvas {
   overflow: hidden;
   border: 1px solid #ccc;
   background-color: #f1f1f1;
+  height: auto;
 }
 
 .tab button {
