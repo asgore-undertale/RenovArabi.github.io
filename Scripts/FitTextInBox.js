@@ -22,54 +22,43 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
     return ""
   }
   
+  // for (const i of NotLastInLine) {
+    // text = text.replaceAll((' '+i+'[\r,\n, ]').toRegex('g'), ' '+i+'§');
+  // }
+  
   const commandsRegex = (linecom.fixForRegex()+"|"+pagecom.fixForRegex()+"|"+commandreg+"|"+textoffsetcom.fixForRegex().replace("<px>", ".*?")).toRegex("g");
   const textoffsetreg = textoffsetcom.fixForRegex().replace("<px>", "(.*?)").toRegex();
   const textlist = text.split(commandsRegex).filter(element => element != undefined);
   const commands = text.match(commandsRegex);
-  var newtext = '',
-    x = 0,
-    y = 0;
+  var newtext = '', x = 0, y = 0;
 
   for (p of range(0, textlist.length)) {
-    const part = textlist[p];
     if (p) {
       const com = commands[p - 1];
       if (com == linecom) {
         x = 0;
         y += fonttable.fontsize + pxbetweenlines;
-        if (y + fonttable.fontsize > boxsize[1]) {
-          y = 0;
-          newtext += pagecom;
-        }
-        else {
-          newtext += com;
-        }
+        if (y + fonttable.fontsize > boxsize[1]) {y = 0;}
       }
       else if (com == pagecom) {
         x = 0, y = 0;
-        newtext += com;
       }
       else if (textoffsetreg.test(com)) {
         x += parseFloat(com.match(/\d+/));
-        newtext += com;
+      }
+	  if (!y && com == linecom) {
+        newtext += pagecom;
       }
       else {
         newtext += com;
       }
     }
-    if (!part.length) {
-      continue
-    }
-    for (var word of part.split(' ')) {
-      if (!word.length) {
-        word = " "
-      } else(word = (!x ? '' : ' ') + word)
+    for (var word of textlist[p].split(' ')) {
+      word = (!x ? '' : ' ') + word
       const wordwidth = getTextWidth(Freeze(word), fonttable, boxsize[0]);
       if (wordwidth > boxsize[0]) {
-        if (word[0] == " ") {
-          word = word.slice(1)
-        }
         if (x) {
+          word = word.slice(1)
           y += fonttable.fontsize + pxbetweenlines;
           if (y + fonttable.fontsize > boxsize[1]) {
             y = 0
@@ -82,9 +71,7 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
           if (x + charwidth > boxsize[0]) {
             x = 0;
             y += fonttable.fontsize + pxbetweenlines;
-            if (y + fonttable.fontsize > boxsize[1]) {
-              y = 0
-            }
+            if (y + fonttable.fontsize > boxsize[1]) {y = 0;}
             newtext += (!y ? pagecom : linecom);
           }
           newtext += char;
@@ -92,15 +79,10 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
         }
       }
       else if (x + wordwidth > boxsize[0]) {
-        if (word[0] == " ") {
-          word = word.slice(1)
-        }
-        x = getTextWidth(Freeze(word), fonttable, boxsize[0]);
+        x -= getTextWidth(' ', fonttable, boxsize[0]);
         y += fonttable.fontsize + pxbetweenlines;
-        if (y + fonttable.fontsize > boxsize[1]) {
-          y = 0
-        }
-        newtext += (!y ? pagecom : linecom) + word;
+        if (y + fonttable.fontsize > boxsize[1]) {y = 0;}
+        newtext += (!y ? pagecom : linecom) + word.slice(1);
       }
       else {
         newtext += word;
@@ -108,5 +90,5 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
       }
     }
   }
-  return newtext;
+  return newtext;//.replaceAll('§', ' ');
 }
