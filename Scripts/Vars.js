@@ -23,7 +23,7 @@ const _AFF_DESC_ = `Char${_A_SEPARATOR_}X${_A_SEPARATOR_}Y${_A_SEPARATOR_}Width$
   // alert("النسخة {_VERSION_}معطوبة أو غير متوافقة.\n(ستتم العملية على أي حال.)")
 // }
 
-const ArabicChars = 'ٱٻپڀٺٿٹڤڦڄڃچڇڍڌڎڈژڑکگڳڱںڻۀہھےۓڭۇۆۈۋۅۉېی؟،؛ـءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىي' // and Persian
+const ArabicChars = 'ٱٻپڀٺٿٹڤڦڄڃچڇڍڌڎڈژڑکگڳڱںڻۀہھےۓڭۇۆۈۋۅۉېیءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىي' // and Persian
 const FreezedArabicChars = 'ﺀﺁﺂﺃﺄﺅﺆﺇﺈﺉﺊﺋﺌﺍﺎﺏﺐﺑﺒﺓﺔﺕﺖﺗﺘﺙﺚﺛﺜﺝﺞﺟﺠﺡﺢﺣﺤﺥﺦﺧﺨﺩﺪﺫﺬﺭﺮﺯﺰﺱﺲﺳﺴﺵﺶﺷﺸﺹﺺﺻﺼﺽﺾﺿﻀﻁﻂﻃﻄﻅﻆﻇﻈﻉﻊﻋﻌﻍﻎﻏﻐﻑﻒﻓﻔﻕﻖﻗﻘﻙﻚﻛﻜﻝﻞﻟﻠﻡﻢﻣﻤﻥﻦﻧﻨﻩﻪﻫﻬﻭﻮﻯﻰﻱﻲﻳﻴﻵﻶﻷﻸﻹﻺﻻﻼﭐﭑﭑﭐﭔﭕﭓﭒﭘﭙﭗﭖﭜﭝﭛﭚﭠﭡﭟﭞﭤﭥﭣﭢﭨﭩﭧﭦﭬﭭﭫﭪﭰﭱﭯﭮﭴﭵﭳﭲﭸﭹﭷﭶﭼﭽﭻﭺﮀﮁﭿﭾﮂﮃﮃﮂﮄﮅﮅﮄﮆﮇﮇﮆﮈﮉﮉﮈﮊﮋﮋﮊﮌﮍﮍﮌﮐﮑﮏﮎﮔﮕﮓﮒﮘﮙﮗﮖﮜﮝﮛﮚﯨﯩﮟﮞﮢﮣﮡﮠﮤﮥﮥﮤﮨﮩﮧﮦﮬﮭﮫﮪﮮﮯﮯﮮﮰﮱﮱﮰﯕﯖﯔﯓﯗﯘﯘﯗﯙﯚﯚﯙﯛﯜﯜﯛﯞﯟﯟﯞﯠﯡﯡﯠﯢﯣﯣﯢﯦﯧﯥﯤﯾﯿﯽﯼ'
 const CharsConnectBoth = 'ئبتثجحخسشصضطظعغفقكلمنهيـٻپڀٺٿٹڤڦڄڃچڇکگڳڱںڻہھڭېی'
 const CharsConnectBefore = 'آأؤإاةدذرزوىٱڍڌڎڈژڑۀےۓۇۆۈۋۅۉ'
@@ -33,6 +33,7 @@ const EnglishChars = '?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 const ASCII = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
 const ExtendedASCII = '¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ'
 const Symbols = '!"#$%&\'()*+,-./:;<=>@[\\]^_`{|}~'
+const ArabicSymbols = '؟،؛ـ'
 const Numbers = '0123456789٠١٢٣٤٥٦٧٨٩'
 const NeutralChars = ' '
 const Returns = '\r\n'

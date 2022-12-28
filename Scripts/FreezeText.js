@@ -1,13 +1,15 @@
 function Freeze(text, mergla=true) {
   var aroundbefore, aroundafter, before, after, newtext = "";
+  const arabic = ArabicChars+Harakat;
+  const allharakat = Harakat+FreezedHarakat;
   text = " " + text + " ";
   
   for (var i of range(1, text.length-1)) {
-    if (!(ArabicChars.includes(text[i]))) {newtext += text[i]; continue}
+    if (!(arabic).includes(text[i])) {newtext += text[i]; continue}
     aroundbefore = 1, aroundafter = 1;
-    while ((Harakat+FreezedHarakat).includes(text[i - aroundbefore])) {aroundbefore += 1};
+    while ((allharakat).includes(text[i - aroundbefore])) {aroundbefore += 1};
     if (CharsConnectBoth.includes(text[i - aroundbefore])) {before = 1} else {before = 0};
-    while ((Harakat+FreezedHarakat).includes(text[i + aroundafter])) {aroundafter += 1};
+    while ((allharakat).includes(text[i + aroundafter])) {aroundafter += 1};
     if (CharsConnectBoth.includes(text[i]) && (CharsConnectBoth.includes(text[i + aroundafter]) || CharsConnectBefore.includes(text[i + aroundafter]))) {after = 1} else {after = 0};
     
     if (!(text[i] in freezedArabicTable)) {newtext += text[i]} else {

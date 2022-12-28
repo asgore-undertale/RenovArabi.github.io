@@ -1,4 +1,4 @@
-const fullStack = ArabicChars + FreezedArabicChars + NeutralChars + Harakat + FreezedHarakat + Returns + BowsList.join("");
+const fullStack = ArabicChars + ArabicSymbols + FreezedArabicChars + NeutralChars + Harakat + FreezedHarakat + Returns + BowsList.join("");
 
 function ReverseAll(text) {
   var newtext = "";
