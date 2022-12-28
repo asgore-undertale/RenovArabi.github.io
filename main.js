@@ -33,7 +33,7 @@ function convertText(text) {
   const harakatoffsetvalue = parseInt(getById("harakatoffsetvalue").value);
   const dtesnum = parseInt(getById("dtesnum").value);
   const dteslen = getById("dteslen").value.split(',').map(x => parseInt(x));
-  const ignoreddtes = getById("ignoreddtes").value;
+  const useddtes = getById("useddtes").value;
   const boxsize = getById("boxsize").value.split(',').map(x => parseInt(x));
   const pxbetweenlines = parseInt(getById("pxbetweenlines").value);
   const extractreg = getById("extractreg").value;
@@ -85,7 +85,7 @@ function convertText(text) {
       part = Freeze(part)
     }
     if (getById("compress").checked) {
-      part = CompressText(part, dteslen, dtesnum, ignoreddtes)
+      part = CompressText(part, dteslen, dtesnum, useddtes)
     }
     if (getById("reverseall").checked) {
       part = ReverseAll(part)

@@ -29,8 +29,16 @@ function ConnectHarakat(text) {
     while ((Harakat+FreezedHarakat).includes(text[i+aroundafter])) {aroundafter += 1}
     if (!(CharsConnectBoth+CharsConnectBefore).includes(text[i + aroundafter])) {newtext += text[i]; continue}
     
+    var found = true;
     for (var [key, value] of Object.entries(connectedHarakatTable)) {
-      if (value.includes(text[i])) {newtext += key; break}
+      if (value.includes(text[i])) {
+        newtext += key;
+        found = false;
+        break;
+      }
+    }
+    if (found) {
+      newtext += text[i];
     }
   }
   return newtext;

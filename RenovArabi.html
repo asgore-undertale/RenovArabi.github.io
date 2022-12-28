@@ -17,7 +17,7 @@
   <script src="GuiText.js"></script>
   <script src="main.js"></script>
   <head>
-    <title>RenovArabi v1.02.01</title> <!-- massive update.small updates.fixes-->
+    <title>RenovArabi v1.02.02</title> <!-- massive update.small updates.fixes-->
     <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="style.css"/>
   </head>
@@ -106,12 +106,13 @@
             <div><label class=celllabel id="harakatoffsetlabel">إزاحة الحركات بـ:</label><textarea class=cell id="harakatoffsetvalue" placeholder=int>-1</textarea></div>
             <div><label class=celllabel id="dtesnumlabel">عدد الاختزالات:</label><textarea class=cell id="dtesnum" placeholder=int+>200</textarea></div>
             <div><label class=celllabel id="dteslenslabel">أطوال الاختزالات:</label><textarea class=cell id="dteslen" placeholder=arr[int+]>3,2,4</textarea></div>
-            <div><label class=celllabel id="ignoreddteslabel">الاختزالات المهملة:</label><textarea class=cell id="ignoreddtes" placeholder=string></textarea></div>
             <div><label class=celllabel id="fontsizelabel">حجم الخط:</label><textarea class=cell id="fontsize" placeholder=int+>24</textarea></div>
             <div><label class=celllabel id="boxsizelabel">حجم صندوق الخط:</label><textarea class=cell id="boxsize" placeholder=arr[int+,2]>360,120</textarea></div>
             <div><label class=celllabel id="pxbetweenlineslabel">بين سطور الصندوق:</label><textarea class=cell id="pxbetweenlines" placeholder=int>3</textarea></div>
           </div>
-          <hr>
+          <div><label class=celllabel id="useddteslabel">الاختزالات المستعملة:</label><textarea id="useddtes" placeholder=string></textarea></div>
+          <script>getById("useddtes").innerText = Object.keys(mergedArabicChars).join('');</script>
+		  <hr>
           <div class=main>
             <div>
               <label class=celllabel id="convertfromlabel">تحويل من:</label>
@@ -185,10 +186,6 @@
       <div><label id="ctetitle">- محرر جداول الترميز -</label></div>
       <div>
         <div class=main id="cipheringTableEditorNav">
-          <script>
-            var cipheringTableEditor = createCTE();
-            getById("cipheringTableEditorNav").appendChild(cipheringTableEditor);
-          </script>
         </div>
         <nav>
           <div class=main>

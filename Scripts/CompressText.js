@@ -1,7 +1,7 @@
-function CompressText(text, dteLengths, resultsNum, ignoredDtes) {
+function CompressText(text, dteLengths, resultsNum, usedDtes) {
   if (!text.length) {return ""}
   
-  const dtesList = [].concat(...dteLengths.map(x => text.subs(x))).removeDublicatedItems().filter(x => (x in mergedArabicChars && !ignoredDtes.includes(mergedArabicChars[x])));
+  const dtesList = [].concat(...dteLengths.map(x => text.subs(x))).removeDublicatedItems().filter(x => (x in mergedArabicChars && usedDtes.includes(x)));
   
   for (const i of range(0, min(resultsNum, dtesList.length))) {
     dtesList.sort((a, b) => {return text.count(b) - text.count(a)});
