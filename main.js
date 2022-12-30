@@ -85,16 +85,16 @@ function convertText(text) {
       part = Freeze(part)
     }
     if (getById("compress").checked) {
-      part = CompressText(part, dteslen, dtesnum, useddtes)
+      part = CompressText(part, useddtes)
+    }
+    if (getById("cipher").checked) {
+      part = Cipher(part, _ciphertable, defaultchiperchar, false, getById('notinciphertable').selectedIndex)
     }
     if (getById("reverseall").checked) {
       part = ReverseAll(part)
     }
     if (getById("reversearabi").checked) {
       part = ReverseArabic(part)
-    }
-    if (getById("cipher").checked) {
-      part = Cipher(part, _ciphertable, defaultchiperchar, false, getById('notinciphertable').selectedIndex)
     }
     if (getById("uncipher").checked) {
       part = Cipher(part, _ciphertable, defaultchiperchar, true, getById('notinciphertable').selectedIndex)

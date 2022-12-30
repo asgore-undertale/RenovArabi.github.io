@@ -17,7 +17,7 @@
   <script src="GuiText.js"></script>
   <script src="main.js"></script>
   <head>
-    <title>RenovArabi v1.02.02</title> <!-- massive update.small updates.fixes-->
+    <title>RenovArabi v1.02.03</title> <!-- massive update.small updates.fixes-->
     <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="style.css"/>
   </head>
@@ -111,7 +111,7 @@
             <div><label class=celllabel id="pxbetweenlineslabel">بين سطور الصندوق:</label><textarea class=cell id="pxbetweenlines" placeholder=int>3</textarea></div>
           </div>
           <div><label class=celllabel id="useddteslabel">الاختزالات المستعملة:</label><textarea id="useddtes" placeholder=string></textarea></div>
-          <script>getById("useddtes").innerText = Object.keys(mergedArabicChars).join('');</script>
+          <script>getById("useddtes").innerText = Object.values(mergedArabicChars).join('');</script>
 		  <hr>
           <div class=main>
             <div>
@@ -242,9 +242,9 @@
     |-- + إضافة تطويلة للحركات.<br>
     |-- + التجميد.<br>
     |-- + الاختزال.<br>
+    |-- + ترميز.<br>
     |-- + عكس النص كاملاً.<br>
     |-- + عكس العربية.<br>
-    |-- + ترميز.<br>
     |-- + نقض الترميز.<br>
     |-- + نقض الاختزال.<br>
     |-- + نقض التجميد.<br>
