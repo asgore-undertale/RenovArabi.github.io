@@ -111,7 +111,7 @@
             <div><label class=celllabel id="pxbetweenlineslabel">بين سطور الصندوق:</label><textarea class=cell id="pxbetweenlines" placeholder=int>3</textarea></div>
           </div>
           <div><label class=celllabel id="useddteslabel">الاختزالات المستعملة:</label><textarea id="useddtes" placeholder=string></textarea></div>
-          <script>getById("useddtes").innerText = Object.values(mergedArabicChars).join('');</script>
+          <script>getById("useddtes").innerText = Object.keys(mergedArabicChars).join('');</script>
 		  <hr>
           <div class=main>
             <div>
