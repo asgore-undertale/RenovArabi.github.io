@@ -54,7 +54,7 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
       }
     }
     for (var word of textlist[p].split(' ')) {
-      word = (!x ? '' : ' ') + word
+      word = (!(x+p) ? '' : ' ') + word
       const wordwidth = getTextWidth(word, fonttable, boxsize[0]);
       if (wordwidth > boxsize[0]) {
         if (x) {
@@ -79,7 +79,8 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
         }
       }
       else if (x + wordwidth > boxsize[0]) {
-        x = wordwidth - getTextWidth(' ', fonttable, boxsize[0]);
+        x = wordwidth
+		if (p) {x -= getTextWidth(' ', fonttable, boxsize[0]);}
         y += fonttable.fontsize + pxbetweenlines;
         if (y + fonttable.fontsize > boxsize[1]) {y = 0;}
         newtext += (!y ? pagecom : linecom) + word.slice(1);
