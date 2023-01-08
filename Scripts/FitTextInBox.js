@@ -49,6 +49,9 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
         x += parseFloat(com.match(/\d+/));
         newtext += com;
       }
+	  else {
+	    newtext += com;
+      }
     }
     for (var word of textlist[p].split(' ')) {
       word = (!x ? '' : ' ') + word
