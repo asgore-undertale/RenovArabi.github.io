@@ -13,7 +13,14 @@ const _ACT_DESC_ = `الحرف${_A_SEPARATOR_}أول${_A_SEPARATOR_}وسط${_A_S
 const _AFF_DESC_ = `Char${_A_SEPARATOR_}X${_A_SEPARATOR_}Y${_A_SEPARATOR_}Width${_A_SEPARATOR_}Height${_A_SEPARATOR_}Xoffset${_A_SEPARATOR_}Yoffset${_A_SEPARATOR_}Xadvance`
 
 
-// function checkVersion(ver, index) { // if      (index == 0) {_VERSION_ = _ACT_VERSION_} // else if (index == 1) {_VERSION_ = _AFT_VERSION_} // else if (index == 2) {_VERSION_ = _AFF_VERSION_} // else {return}  // if (parseFloat(ver) == _VERSION_) {return} // alert("النسخة {_VERSION_}معطوبة أو غير متوافقة.\n(ستتم العملية على أي حال.)")
+// function checkVersion(ver, index) {
+  // if      (index == 0) {_VERSION_ = _ACT_VERSION_}
+  // else if (index == 1) {_VERSION_ = _AFT_VERSION_}
+  // else if (index == 2) {_VERSION_ = _AFF_VERSION_}
+  // else {return}
+  
+  // if (parseFloat(ver) == _VERSION_) {return}
+  // alert("النسخة {_VERSION_}معطوبة أو غير متوافقة.\n(ستتم العملية على أي حال.)")
 // }
 
 const ArabicChars = 'ٱٻپڀٺٿٹڤڦڄڃچڇڍڌڎڈژڑکگڳڱںڻۀہھےۓڭۇۆۈۋۅۉېیءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىي' // and Persian
@@ -34,10 +41,13 @@ const BowsList = ['()', '[]', '{}', '<>', '＜＞', '「」', '《》', '〈〉'
 const LaList = [['ﻟﺂ', 'ﻵ'], ['ﻠﺂ', 'ﻶ'], ['ﻟﺄ', 'ﻷ'], ['ﻠﺄ', 'ﻸ'], ['ﻟﺈ', 'ﻹ'], ['ﻠﺈ', 'ﻺ'], ['ﻟﺎ', 'ﻻ'], ['ﻠﺎ', 'ﻼ']]
 const NotLastInLine = ['من', 'إلى', 'على', 'ثم', 'حتى', 'بدون', 'دون', 'لن', 'إذن', 'لما', 'كأن', 'لكن', 'ليت', 'لعل', 'ما', 'لو', 'إذا', 'يا', 'أيا', 'هيا', 'هل', 'مع', 'الذي', 'التي', 'الذان', 'اللتان', 'الذين', 'اللواتي', 'اللاتي', 'اللائي', 'و', 'أم', 'أن', 'إن', 'أو', 'أي', 'إي', 'بل', 'عن', 'في', 'قد',  'لقد', 'كي', 'لا', 'لم', 'مذ', 'منذ', 'ها', 'وا', 'وي', 'ألا', 'جير', 'خلا', 'رب', 'سوف', 'عدا', 'إلا',  'إما',  'أما',  'هلا',   'لولا',   'لوما']
 
-const connectedHarakatTable = { 'ﹷ' : ['ﹶ', 'َ'], 'ﹹ' : ['ﹸ', 'ُ'], 'ﹻ' : ['ﹺ', 'ِ'], 'ﹽ' : ['ﹼ', 'ّ'], 'ﹿ' : ['ﹾ', 'ْ'], 'ﹱ' : ['ﱟ', 'ﹰ', 'ً'], 'ﳲ' : ['ﱠ'], 'ﳳ' : ['ﱡ'], 'ﳴ' : ['ﱢ']
+const connectedHarakatTable = {
+  'ﹷ' : ['ﹶ', 'َ'], 'ﹹ' : ['ﹸ', 'ُ'], 'ﹻ' : ['ﹺ', 'ِ'], 'ﹽ' : ['ﹼ', 'ّ'], 'ﹿ' : ['ﹾ', 'ْ'], 'ﹱ' : ['ﱟ', 'ﹰ', 'ً'], 'ﳲ' : ['ﱠ'], 'ﳳ' : ['ﱡ'], 'ﳴ' : ['ﱢ']
 }
 
-const mergedHarakatTable = {//الترتيب مهم 'ﱠ' : /[ّ,ﹼ][َ,ﹶ]/g, 'ﳲ' : /[ّ,ﹼ,ﹽ][َ,ﹶ,ﹷ]/g, 'ﱡ' : /[ّ,ﹼ][ُ,ﹸ]/g, 'ﳳ' : /[ّ,ﹼ,ﹽ][ُ,ﹸ,ﹹ]/g, 'ﱢ' : /[ّ,ﹼ][ِ,ﹺ]/g, 'ﳴ' : /[ّ,ﹼ,ﹽ][ِ,ﹺ,ﹻ]/g, 'ﱞ' : /[ّ,ﹼ][ٌ,ﹲ]/g, 'ﱟ' : /[ّ,ﹼ][ٍ,ﹴ]/g
+const mergedHarakatTable = {//الترتيب مهم
+  'ﱠ' : /[ّ,ﹼ][َ,ﹶ]/g, 'ﳲ' : /[ّ,ﹼ,ﹽ][َ,ﹶ,ﹷ]/g, 'ﱡ' : /[ّ,ﹼ][ُ,ﹸ]/g, 'ﳳ' : /[ّ,ﹼ,ﹽ][ُ,ﹸ,ﹹ]/g, 'ﱢ' : /[ّ,ﹼ][ِ,ﹺ]/g, 'ﳴ' : /[ّ,ﹼ,ﹽ][ِ,ﹺ,ﹻ]/g,
+  'ﱞ' : /[ّ,ﹼ][ٌ,ﹲ]/g, 'ﱟ' : /[ّ,ﹼ][ٍ,ﹴ]/g
 }
 
 const freezedArabicTable = {//<initial><medial><final><isolated>
