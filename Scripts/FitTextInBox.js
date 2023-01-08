@@ -31,8 +31,8 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
   const textlist = text.split(commandsRegex).filter(element => element != undefined);
   const commands = text.match(commandsRegex);
   var newtext = '', x = 0, y = 0;
-
-  for (p of range(0, textlist.length)) {
+  
+  for (const p of range(0, textlist.length)) {
     if (p) {
       const com = commands[p - 1];
       if (com == linecom) {
@@ -53,8 +53,9 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
 	    newtext += com;
       }
     }
-    for (var word of textlist[p].split(' ')) {
-      word = (!(x+p) ? '' : ' ') + word
+	var words = textlist[p].split(' ');
+    for (const w of range(0, words.length)) {
+      var word = ((x && w)? ' ' : '') + words[w];
       const wordwidth = getTextWidth(word, fonttable, boxsize[0]);
       if (wordwidth > boxsize[0]) {
         if (x) {
@@ -63,7 +64,7 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
           if (y + fonttable.fontsize > boxsize[1]) {
             y = 0
           }
-          newtext += (!y ? pagecom : linecom);
+          newtext += (y ? linecom : pagecom);
         }
         x = 0;
         for (var char of Freeze(word)) {
@@ -72,18 +73,17 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
             x = 0;
             y += fonttable.fontsize + pxbetweenlines;
             if (y + fonttable.fontsize > boxsize[1]) {y = 0;}
-            newtext += (!y ? pagecom : linecom);
+            newtext += (y ? linecom : pagecom);
           }
           newtext += char;
           x += charwidth;
         }
       }
       else if (x + wordwidth > boxsize[0]) {
-        x = wordwidth
-		if (p) {x -= getTextWidth(' ', fonttable, boxsize[0]);}
+        x = wordwidth - getTextWidth(' ', fonttable, boxsize[0]);
         y += fonttable.fontsize + pxbetweenlines;
         if (y + fonttable.fontsize > boxsize[1]) {y = 0;}
-        newtext += (!y ? pagecom : linecom) + word.slice(1);
+        newtext += (y ? linecom : pagecom) + word.slice(1);
       }
       else {
         newtext += word;
