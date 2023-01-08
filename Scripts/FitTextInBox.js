@@ -39,23 +39,20 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
         x = 0;
         y += fonttable.fontsize + pxbetweenlines;
         if (y + fonttable.fontsize > boxsize[1]) {y = 0;}
+        newtext += com;
       }
       else if (com == pagecom) {
         x = 0, y = 0;
+        newtext += pagecom;
       }
       else if (textoffsetreg.test(com)) {
         x += parseFloat(com.match(/\d+/));
-      }
-	  if (!y && com == linecom) {
-        newtext += pagecom;
-      }
-      else {
         newtext += com;
       }
     }
     for (var word of textlist[p].split(' ')) {
       word = (!x ? '' : ' ') + word
-      const wordwidth = getTextWidth(Freeze(word), fonttable, boxsize[0]);
+      const wordwidth = getTextWidth(word, fonttable, boxsize[0]);
       if (wordwidth > boxsize[0]) {
         if (x) {
           word = word.slice(1)
@@ -79,7 +76,7 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
         }
       }
       else if (x + wordwidth > boxsize[0]) {
-        x -= getTextWidth(' ', fonttable, boxsize[0]);
+        x = wordwidth - getTextWidth(' ', fonttable, boxsize[0]);
         y += fonttable.fontsize + pxbetweenlines;
         if (y + fonttable.fontsize > boxsize[1]) {y = 0;}
         newtext += (!y ? pagecom : linecom) + word.slice(1);
