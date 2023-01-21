@@ -21,11 +21,11 @@ function readCsv(csvContent) {
   var mode = true;
   
   for (var c of range(0, csvContent.length)) {
-    if (csvContent[c]+csvContent[c+1] == _CSV_QUOTECHAR_.repeat(2) && !mode) {content += _CSV_QUOTECHAR_}
-    if (csvContent[c] == _CSV_QUOTECHAR_) {mode = !mode; continue}
-    if (csvContent[c] == _CSV_QUOTECHAR_ && (csvContent[c+1] == _CSV_DELIMITER_ || Returns.includes(csvContent[c]) || !csvContent[c+1]) && !mode) {mode = true; continue}
-    if (csvContent[c] == _CSV_DELIMITER_ && mode) {row.push(content); content = ''; continue}
-    if (Returns.includes(csvContent[c]) && mode) {row.push(content); content = ''; csvtable.push(row); row = []; continue}
+    if (csvContent[c]+csvContent[c+1] == CSV_QUOTECHAR.repeat(2) && !mode) {content += CSV_QUOTECHAR}
+    if (csvContent[c] == CSV_QUOTECHAR) {mode = !mode; continue}
+    if (csvContent[c] == CSV_QUOTECHAR && (csvContent[c+1] == CSV_DELIMITER || RETURNS.includes(csvContent[c]) || !csvContent[c+1]) && !mode) {mode = true; continue}
+    if (csvContent[c] == CSV_DELIMITER && mode) {row.push(content); content = ''; continue}
+    if (RETURNS.includes(csvContent[c]) && mode) {row.push(content); content = ''; csvtable.push(row); row = []; continue}
     content += csvContent[c];
   }
   row.push(content);

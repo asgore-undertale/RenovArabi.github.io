@@ -1,21 +1,21 @@
-function CompressText(text, usedDtes) {
+function compress_text(text, used_dtes) {
   if (!text.length) {return ""}
-  
-  for (dte of usedDtes) {
-    text = text.replaceAll(mergedArabicChars[dte], dte);
+  for (dte of used_dtes) {
+    if (!(dte in MERGED_ARABIC_TABLE)) {
+      continue;
+    }
+    text = text.replaceAll(MERGED_ARABIC_TABLE[dte], dte);
   }
-  
   return text;
 }
 
-function UncompressText(text) {
-  for (const [k, v] of Object.entries(mergedArabicChars)) {
+function uncompress_text(text) { // used_dtes
+  for (const [k, v] of Object.entries(MERGED_ARABIC_TABLE)) {
     text = text.replaceAll(k, v);
   }
   return text;
 }
 
-function SuggestDTE(text, dteLengths, resultsNum) {
-  const dtesList = [].concat(...dteLengths.map(x => text.subs(x))).removeDublicatedItems().sort((a, b) => {return text.count(b) - text.count(a)}).slice(0, resultsNum);
-  return dtesList;
+function suggest_dte(text, dteLengths, resultsNum) {
+  return [].concat(...dteLengths.map(x => text.subs(x))).removeDublicatedItems().sort((a, b) => {return text.count(b) - text.count(a)}).slice(0, resultsNum);
 }

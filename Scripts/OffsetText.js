@@ -1,4 +1,4 @@
-function OffsetTextWithSpaces(text, boxwidth, fonttable, offset, linecom, pagecom, commandreg, textoffsetcom) {
+function offset_text_with_spaces(text, boxwidth, fonttable, offset, linecom, pagecom, commandreg, textoffsetcom) {
   if (Object.keys(fonttable).length < 4) {return text}
   if (fonttable[" "] === undefined) {
     alert('(Space) has no width.');
@@ -12,8 +12,8 @@ function OffsetTextWithSpaces(text, boxwidth, fonttable, offset, linecom, pageco
   for (l of range(0, lines.length)) {
     if (l) {newtext += dialogcommands[l-1]}
     
-    const freepx = boxwidth - getTextWidth(Freeze(lines[l].replace(commandsregex, "")), fonttable, boxwidth);
-    const spacesNum = parseInt(freepx / getTextWidth(" ", fonttable, boxwidth))
+    const freepx = boxwidth - get_text_width(freeze(lines[l].replace(commandsregex, "")), fonttable, boxwidth);
+    const spacesNum = parseInt(freepx / get_text_width(" ", fonttable, boxwidth))
     if (spacesNum <= 0) {newtext += lines[l]}
     else if (offset == 0) {newtext += lines[l] + ' '.repeat(spacesNum)}
     else if (offset == 1) {newtext += ' '.repeat(spacesNum) + lines[l]}
@@ -23,7 +23,7 @@ function OffsetTextWithSpaces(text, boxwidth, fonttable, offset, linecom, pageco
   return newtext;
 }
 
-function OffsetTextWithCommands(text, boxwidth, fonttable, offset, linecom, pagecom, commandreg, textoffsetcom) {
+function offset_text_with_commands(text, boxwidth, fonttable, offset, linecom, pagecom, commandreg, textoffsetcom) {
   if (Object.keys(fonttable).length < 4) {return text}
   const dialogRegex = (linecom.fixForRegex()+"|"+pagecom.fixForRegex()).toRegex("g");
   const lines = text.split(dialogRegex).filter(element => element != undefined);
@@ -33,7 +33,7 @@ function OffsetTextWithCommands(text, boxwidth, fonttable, offset, linecom, page
   
   for (l of range(0, lines.length)) {
     if (l) {newtext += dialogcommands[l-1];}
-    var freepx = boxwidth - getTextWidth(Freeze(lines[l].replace(commandsregex, "")), fonttable, boxwidth);
+    var freepx = boxwidth - get_text_width(freeze(lines[l].replace(commandsregex, "")), fonttable, boxwidth);
 	[...lines[l].matchAll(textoffsetcom.fixForRegex().replace("<px>", "(.*?)").toRegex("g"))].map(x => freepx -= parseFloat(x[1]))
 	
     if (offset == 0) {newtext += lines[l] + textoffsetcom.replace("<px>", freepx)}

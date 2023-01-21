@@ -1,5 +1,5 @@
-function completeArabic(charmap) {
-  const values = Object.values(freezedArabicTable);
+function complete_arabic(charmap) {
+  const values = Object.values(FREEZED_ARABIC_TABLE);
   for (var value of values) {
     if (value[0] in charmap && value[1] in charmap && value[2] in charmap && value[3] in charmap) {continue}
     if      (!(value[1] in charmap) && (value[0] in charmap)) {charmap[value[1]] = charmap[value[0]]}
@@ -14,9 +14,9 @@ function completeArabic(charmap) {
   return charmap
 }
 
-function sortArabic(charmap) {
-  for (const char of Object.keys(freezedArabicTable)) {
-    var values = freezedArabicTable[char];
+function sort_arabic(charmap) {
+  for (const char of Object.keys(FREEZED_ARABIC_TABLE)) {
+    var values = FREEZED_ARABIC_TABLE[char];
     charmap[char] = values.map(x => charmap[x]).replaceItems(undefined, '');
     for (const value of values) {delete charmap[value]}
   }
@@ -27,7 +27,7 @@ function sortArabic(charmap) {
   return charmap;
 }
 
-function oneToOneCharmap(charmap) {
+function one_one_charmap(charmap) {
   if (!Object.keys(charmap).length) {return {}}
   var newcharmap = {};
   for (const [key, value] of Object.entries(charmap)) {

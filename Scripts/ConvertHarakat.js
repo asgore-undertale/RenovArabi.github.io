@@ -1,57 +1,34 @@
-function DelHarakat(text) {
-  for (var haraka of Harakat+FreezedHarakat) {text = text.replaceAll(haraka, '')}
+function del_harakat(text) {
+  return text.replace(HARAKAT_PATTERN.toRegex("g"), "")
+}
+
+function keep_first_haraka(text) {
+  return text.replace(("(" + HARAKAT_PATTERN + ")" + HARAKAT_PATTERN + "+").toRegex("g"), "$1")
+}
+
+function merge_harakat(text) {
+  for (const [key, value] of Object.entries(MERGED_HARAKAT_TABLE)) {
+    text = text.replace(value, key)
+  }
   return text;
 }
 
-function MergeHarakat(text) {
-  for (var [key, value] of Object.entries(mergedHarakatTable)) {text = text.replace(value, key)}
-  return text;
-}
-
-function KeepFirstHaraka(text) {
-  var newtext = '';
-  text = ' ' + text;
-  for (i of range(1, text.length)) {
-    if (!((Harakat+FreezedHarakat).includes(text[i])) || (!((Harakat+FreezedHarakat).includes(text[i-1])))) {newtext += text[i]}
-  }
-  return newtext;
-}
-
-function ConnectHarakat(text) {
-  var newtext = "";
-  text = " " + text + " ";
-  for (var i of range(1, text.length-1)) {
-    if (!(Harakat+FreezedHarakat).includes(text[i]) || (text[i] in connectedHarakatTable)) {newtext += text[i]; continue}
-    
-    var aroundbefore = 1, aroundafter = 1;
-    while ((Harakat+FreezedHarakat).includes(text[i-aroundbefore])) {aroundbefore += 1}
-    if (!CharsConnectBoth.includes(text[i - aroundbefore])) {newtext += text[i]; continue}
-    while ((Harakat+FreezedHarakat).includes(text[i+aroundafter])) {aroundafter += 1}
-    if (!(CharsConnectBoth+CharsConnectBefore).includes(text[i + aroundafter])) {newtext += text[i]; continue}
-    
-    var found = true;
-    for (var [key, value] of Object.entries(connectedHarakatTable)) {
-      if (value.includes(text[i])) {
-        newtext += key;
-        found = false;
-        break;
-      }
-    }
-    if (found) {
-      newtext += text[i];
-    }
-  }
-  return newtext;
-}
-
-function MoveHaraka(text, step) {
-  var newtext = DelHarakat(text);
+function offset_harakat(text, offset) {
+  var newtext = del_harakat(text);
   for (c of range(0, text.length)) {
-    if (!(Harakat+FreezedHarakat).includes(text[c])) {continue}
-    if (c+step<0) {var insertindex = 0}
-    else if (c+step>text.length) {var insertindex = text.length}
-    else {var insertindex = c+step}
-    newtext = newtext.insert(text[c], insertindex)
+    if (!ALL_HARAKAT.includes(text[c])) {continue;}
+    newtext = newtext.insert(text[c], min(max(c+offset, 0), newtext.length))
   }
   return newtext
+}
+
+function connect_harakat(text) {
+  const pattern1 = "([" + CHARS_CONNECT_BOTH + "])";
+  const pattern3 = "([" + CHARS_CONNECT_BOTH + CHARS_CONNECT_BEFORE + "])";
+  for (const [k, v] of Object.entries(CONNECTED_HARAKAT_TABLE)) {
+    const pattern2 = "[" + v + "]";
+    const re = pattern1 + "(" + HARAKAT_PATTERN + "*)" + pattern2 + "(" + HARAKAT_PATTERN + "*)" + pattern3;
+    text = text.replace(re.toRegex("g"), "$1$2" + k + "$3$4");
+  }
+  return text;
 }

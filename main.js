@@ -5,7 +5,7 @@ var ciphertable = {},
   translatedFile;
 
 /*function getTextTtfWidth(text, font) {
-var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
+var canvas = get_text_width.canvas || (get_text_width.canvas = document.createElement("canvas"));
 var context = canvas.getContext("2d");
 context.font = font;
 var metrics = context.measureText(text);
@@ -29,7 +29,6 @@ function convertText(text) {
   const commandreg = getById("commandreg").value;
   const linecom = getById("linecom").value;
   const pagecom = getById("pagecom").value;
-  const defaultchiperchar = getById("defaultchiperchar").value;
   const harakatoffsetvalue = parseInt(getById("harakatoffsetvalue").value);
   const dtesnum = parseInt(getById("dtesnum").value);
   const dteslen = getById("dteslen").value.split(',').map(x => parseInt(x));
@@ -60,64 +59,64 @@ function convertText(text) {
       continue
     }
     if (getById("extract").checked) {
-      part = ExtractFromText(part, extractreg).join("\n")
+      part = extract_from_text(part, extractreg).join("\n")
     }
     if (getById("convertfrom").selectedIndex) {
-      part = HexToText(part, inbytercom)
+      part = hex_to_text(part, inbytercom)
     }
     if (getById("delharakat").checked) {
-      part = DelHarakat(part)
+      part = del_harakat(part)
     } else {
       if (getById("mergeharakat").checked) {
-        part = MergeHarakat(part)
+        part = merge_harakat(part)
       }
       if (getById("offsetharakat").checked) {
-        part = MoveHaraka(part, harakatoffsetvalue)
+        part = offset_harakat(part, harakatoffsetvalue)
       }
       if (getById("keepfirstharakat").checked) {
-        part = KeepFirstHaraka(part)
+        part = keep_first_haraka(part)
       }
       if (getById("connectharakat").checked) {
-        part = ConnectHarakat(part)
+        part = connect_harakat(part)
       }
     }
     if (getById("freeze").checked || getById("cipher").checked || getById("compress").checked) {
-      part = Freeze(part)
+      part = freeze(part)
     }
     if (getById("compress").checked) {
-      part = CompressText(part, useddtes)
+      part = compress_text(part, useddtes)
     }
     if (getById("cipher").checked) {
-      part = Cipher(part, _ciphertable, defaultchiperchar, false, getById('notinciphertable').selectedIndex)
+      part = cipher(part, _ciphertable)
     }
     if (getById("reverseall").checked) {
-      part = ReverseAll(part)
+      part = reverse_all(part)
     }
     if (getById("reversearabi").checked) {
-      part = ReverseArabic(part)
+      part = reverse_arabic(part)
     }
     if (getById("uncipher").checked) {
-      part = Cipher(part, _ciphertable, defaultchiperchar, true, getById('notinciphertable').selectedIndex)
+      part = cipher(part, _ciphertable, true)
     }
     if (getById("uncompress").checked) {
-      part = UncompressText(part)
+      part = uncompress_text(part)
     }
     if (getById("unfreeze").checked) { // || getById("uncipher").checked || getById("uncompress").checked
-      part = UnFreeze(part)
+      part = un_freeze(part)
     }
     if (getById("convertto").selectedIndex) {
-      part = TextToHex(part, outbytecom)
+      part = text_to_hex(part, outbytecom)
     }
     newtext += part;
   }
   if (getById("putinbox").checked) {
-    newtext = FitTextInBox(newtext, _fonttable, boxsize, pxbetweenlines, linecom, pagecom, commandreg, textoffsetcom)
+    newtext = fit_text_in_box(newtext, _fonttable, boxsize, pxbetweenlines, linecom, pagecom, commandreg, textoffsetcom)
   }
   if (getById("offset").selectedIndex) {
     if (getById("offsetwith").selectedIndex) {
-      newtext = OffsetTextWithCommands(newtext, boxsize[0], _fonttable, getById("offset").selectedIndex - 1, linecom, pagecom, commandreg, textoffsetcom)
+      newtext = offset_text_with_commands(newtext, boxsize[0], _fonttable, getById("offset").selectedIndex - 1, linecom, pagecom, commandreg, textoffsetcom)
     } else {
-      newtext = OffsetTextWithSpaces(newtext, boxsize[0], _fonttable, getById("offset").selectedIndex - 1, linecom, pagecom, commandreg, textoffsetcom)
+      newtext = offset_text_with_spaces(newtext, boxsize[0], _fonttable, getById("offset").selectedIndex - 1, linecom, pagecom, commandreg, textoffsetcom)
     }
   }
   if (getById('autocopy').checked) {
@@ -154,7 +153,7 @@ function drawText(text) {
   const textoffsetreg = textoffsetcom.fixForRegex().replace("<px>", "(.*?)").toRegex();
   const pagescount = (text.match(pagecom.fixForRegex().toRegex("g")) || []).length;
   const page = (text.split(pagecom)).at(displayedPageIndex % (pagescount + 1));
-  const textlist = Freeze(page).split(commandsRegex).filter(element => element != undefined);
+  const textlist = freeze(page).split(commandsRegex).filter(element => element != undefined);
   const commands = page.match(commandsRegex);
   var x = 0,
     y = 0;
@@ -201,12 +200,12 @@ function drawText(text) {
 }
 
 async function loadciphertable(file) {
-  ciphertable = await loadTable(file);
+  ciphertable = await load_table(file);
   console.log(ciphertable);
 }
 
 async function loadfonttable(file) {
-  fonttable = await loadTable(file);
+  fonttable = await load_table(file);
   console.log(fonttable);
 }
 
@@ -251,7 +250,7 @@ function fillCTE(table) { // CipheringTableEditor
 }
 
 async function loadTableForCTE(file) {
-  const table = await loadTable(file, false);
+  const table = await load_table(file, false);
   cipheringTableEditor = clearHTMLtable(cipheringTableEditor, {
     x: 1,
     y: 1
@@ -260,7 +259,7 @@ async function loadTableForCTE(file) {
     if (!v.length) {
       continue
     }
-    const hex = ReverseAll(v).hexEncode();
+    const hex = reverse_all(v).hexEncode();
     const header = hex.slice(0, -2);
     const x = parseInt(hex.slice(-2, -1), 16);
     const y = parseInt(hex.slice(-1), 16);
@@ -288,10 +287,10 @@ function getCharmapFromCTE() {
 }
 
 function printSuggestedDTEs() {
-  const text = Freeze(getById('enteredtext').value);
+  const text = freeze(getById('enteredtext').value);
   const dteLengths = getById("dteslen").value.split(',').map(x => parseInt(x));
   const resultsNum = parseInt(getById("dtesnum").value);
-  prompt("الاختزالات من الأكثر وروداً للأقل:", "(" + SuggestDTE(text, dteLengths, resultsNum).join(") (") + ")");
+  prompt("الاختزالات من الأكثر وروداً للأقل:", "(" + suggest_dte(text, dteLengths, resultsNum).join(") (") + ")");
 }
 
 function createTTE(row = 1, col = 3) { //TranslatingTableEditor

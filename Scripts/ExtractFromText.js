@@ -1,3 +1,3 @@
-function ExtractFromText(text, extractreg) {
-  return ([...text.matchAll(extractreg.toRegex("g"))] || []);
+function extract_from_text(text, ex_pattern) {
+  return ([...text.matchAll(ex_pattern.toRegex("g"))] || []);
 }

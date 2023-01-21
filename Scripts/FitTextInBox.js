@@ -1,20 +1,20 @@
-function checkChar(char, fonttable, boxwidth) {
+function check_char(char, fonttable, boxwidth) {
   if (!(char in fonttable) || ((fonttable[char].w + fonttable[char].xadv) * fonttable.scale > boxwidth)) {
     return false
   }
   return true;
 }
 
-function getTextWidth(text, fonttable, boxwidth) {
+function get_text_width(text, fonttable, boxwidth) {
   var width = 0;
   for (char of text) {
-    if (!checkChar(char, fonttable, boxwidth)) {continue}
+    if (!check_char(char, fonttable, boxwidth)) {continue}
     width += fonttable[char].w + fonttable[char].xadv;
   }
   return width * fonttable.scale
 }
 
-function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom, commandreg, textoffsetcom) {
+function fit_text_in_box(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom, commandreg, textoffsetcom) {
   if (Object.keys(fonttable).length < 4) {
     return text
   }
@@ -22,7 +22,7 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
     return ""
   }
   
-  // for (const i of NotLastInLine) {
+  // for (const i of NOT_LAST_IN_LINE) {
     // text = text.replaceAll((' '+i+'[\r,\n, ]').toRegex('g'), ' '+i+'§');
   // }
   
@@ -56,7 +56,7 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
 	var words = textlist[p].split(' ');
     for (const w of range(0, words.length)) {
       var word = ((x && w)? ' ' : '') + words[w];
-      const wordwidth = getTextWidth(word, fonttable, boxsize[0]);
+      const wordwidth = get_text_width(word, fonttable, boxsize[0]);
       if (wordwidth > boxsize[0]) {
         if (x) {
           word = word.slice(1)
@@ -67,8 +67,8 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
           newtext += (y ? linecom : pagecom);
         }
         x = 0;
-        for (var char of Freeze(word)) {
-          const charwidth = getTextWidth(char, fonttable, boxsize[0]);
+        for (var char of freeze(word)) {
+          const charwidth = get_text_width(char, fonttable, boxsize[0]);
           if (x + charwidth > boxsize[0]) {
             x = 0;
             y += fonttable.fontsize + pxbetweenlines;
@@ -80,7 +80,7 @@ function FitTextInBox(text, fonttable, boxsize, pxbetweenlines, linecom, pagecom
         }
       }
       else if (x + wordwidth > boxsize[0]) {
-        x = wordwidth - getTextWidth(' ', fonttable, boxsize[0]);
+        x = wordwidth - get_text_width(' ', fonttable, boxsize[0]);
         y += fonttable.fontsize + pxbetweenlines;
         if (y + fonttable.fontsize > boxsize[1]) {y = 0;}
         newtext += (y ? linecom : pagecom) + word.slice(1);

@@ -1,20 +1,20 @@
-function saveTable(name, charmap) {
+function save_table(name, charmap) {
   var content = "";
-  if      (name.endsWith('.act')) {content = saveACT(charmap)}
-  else if (name.endsWith('.tbl')) {content = saveTBL(charmap)}
+  if      (name.endsWith('.act')) {content = save_act(charmap)}
+  else if (name.endsWith('.tbl')) {content = save_tbl(charmap)}
   else {return}
   content.downloadAsFile(name);
 }
 
-function saveACT(charmap) {
-  var content = _ACT_DESC_;
-  for ([k, v] of Object.entries(sortArabic(charmap))) {
-    content += `\n${k}${_A_SEPARATOR_}${v.join(_A_SEPARATOR_)}`;
+function save_act(charmap) {
+  var content = ACT_DESC;
+  for ([k, v] of Object.entries(sort_arabic(charmap))) {
+    content += `\n${k}${A_SEPARATOR}${v.join(A_SEPARATOR)}`;
   }
   return content;
 }
 
-function saveTBL(charmap) {
+function save_tbl(charmap) {
   var content = "";
   for ([k, v] of Object.entries(charmap)) {
     var hex = v.hexEncode();
