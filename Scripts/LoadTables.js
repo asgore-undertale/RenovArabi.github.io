@@ -39,7 +39,7 @@ function load_fnt(fntContent) {
 }
 
 function load_aff(affContent) {
-  const table = affContent.split(RETURNS.subs().reverse().join('|').toRegex('g')).map(x => x.split(A_SEPARATOR));
+  const table = affContent.split(RETURNS.subs().join('|').toRegex('g')).map(x => x.split(A_SEPARATOR));
   
   var charmap = {tallest: 0, scale: 1, type: "aff", pages: {}};
   for (var r of range(1, table.length)) {
@@ -67,14 +67,14 @@ function load_aff(affContent) {
 // }
 
 function load_act(actContent) {
-  const table = actContent.split(RETURNS.subs().reverse().join('|').toRegex('g')).map(x => x.split(A_SEPARATOR));
+  const table = actContent.split(RETURNS.subs().join('|').toRegex('g')).map(x => x.split(A_SEPARATOR));
   var charmap = {};
   for (var r of range(1, table.length)) {charmap[table[r][0]] = table[r].slice(1)}
   return one_one_charmap(charmap.removeUseless());
 }
 
 function load_tbl(tblContent) {
-  const table = tblContent.split(RETURNS.subs().reverse().join('|').toRegex('g')).map(x => x.splitPlus('=', 1));
+  const table = tblContent.split(RETURNS.subs().join('|').toRegex('g')).map(x => x.splitPlus('=', 1));
   var charmap = {};
   
   for (var row of table) {
@@ -86,7 +86,7 @@ function load_tbl(tblContent) {
 }
 
 function load_zts(ztsContent) {
-  const lines = ztsContent.split(RETURNS.subs().reverse().join('|').toRegex('g'));
+  const lines = ztsContent.split(RETURNS.subs().join('|').toRegex('g'));
   const pairs = zip(lines[0], lines[1]);
   var charmap = {};
   for (var i of range(0, pairs.length)) {charmap[pairs[i][1]] = pairs[i][0]}

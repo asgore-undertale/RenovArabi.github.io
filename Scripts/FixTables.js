@@ -27,7 +27,7 @@ function sort_arabic(charmap) {
   return charmap;
 }
 
-function one_one_charmap(charmap) {
+function one_one_charmap(charmap) { // with freezing table
   if (!Object.keys(charmap).length) {return {}}
   var newcharmap = {};
   for (const [key, value] of Object.entries(charmap)) {

@@ -217,8 +217,8 @@ String.prototype.subs = function(sublen=0) {
     for (j of range(0, this.length-sublen+1)) {l.push(this.slice(j, j+sublen))}
     return l;
   }
-  for (sublen of range(0, this.length)) {
-    for (j of range(0, this.length-sublen)) {l.push(this.slice(j, j+sublen+1))}
+  for (sublen of range(this.length, 0, -1)) {
+    for (j of range(0, this.length-sublen+1)) {l.push(this.slice(j, j+sublen))}
   }
   return l;
 }
