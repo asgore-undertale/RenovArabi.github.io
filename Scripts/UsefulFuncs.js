@@ -1,6 +1,11 @@
 function range(start, end, step=1) {
   var l = [];
-  for (var i=start; i<end; i+=step) {l.push(i)}
+  if (step > 0) {
+    for (var i=start; i<end; i+=step) {l.push(i)}
+  }
+  else if (step < 0) {
+    for (var i=start; i>end; i+=step) {l.push(i)}
+  }
   return l;
 }
 
@@ -252,7 +257,6 @@ String.prototype.count = function(str) {
 }
 
 String.prototype.returnInPath = function(steps) {
-  console.log()
   return this.split(/[/,\\]/g).slice(-steps).join("/");
 }
 
