@@ -49,11 +49,11 @@ function convertText(text) {
   const commandsRegex = (linecom.fixForRegex()+"|"+pagecom.fixForRegex()+"|"+commandreg+"|"+textoffsetcom.fixForRegex().replace("<px>", ".*?")).toRegex("g");
   const textlist = text.split(commandsRegex).filter(element => element != undefined);
   const commands = text.match(commandsRegex);
-  var newtext = '';
+  var newtext = [""];
   for (p of range(0, textlist.length)) {
     var part = textlist[p];
     if (p) {
-      newtext += commands[p - 1]
+      newtext.push(commands[p - 1])
     }
     if (!part.length) {
       continue
@@ -107,8 +107,12 @@ function convertText(text) {
     if (getById("convertto").selectedIndex) {
       part = text_to_hex(part, outbytecom)
     }
-    newtext += part;
+    newtext.push(part);
   }
+  if (getById("reversearabi").checked ^ getById("reverseall").checked) {
+    newtext.reverse();
+  }
+  newtext = newtext.join("")
   if (getById("putinbox").checked) {
     newtext = fit_text_in_box(newtext, _fonttable, boxsize, pxbetweenlines, linecom, pagecom, commandreg, textoffsetcom)
   }
