@@ -100,7 +100,7 @@ const GuiText = {
     "uncompresslabel": "Uncompress it",
     "extractlabel": "Extract from it",
     "putinboxlabel": "Put it in a box",
-    "harakatconvertings": "HARAKAT Convertings:",
+    "harakatconvertings": "Harakat Convertings:",
     "delharakatlabel": "Delete them",
     "mergeharakatlabel": "Merg them",
     "offsetharakatlabel": "Offset them",
