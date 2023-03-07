@@ -109,9 +109,6 @@ function convertText(text) {
     }
     newtext.push(part);
   }
-  if (getById("reversearabi").checked ^ getById("reverseall").checked) {
-    newtext.reverse();
-  }
   newtext = newtext.join("")
   if (getById("putinbox").checked) {
     newtext = fit_text_in_box(newtext, _fonttable, boxsize, pxbetweenlines, linecom, pagecom, commandreg, textoffsetcom)
