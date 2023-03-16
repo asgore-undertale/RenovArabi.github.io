@@ -27,7 +27,7 @@ function reverse_arabic(text) {
 
 function reverse_bows(text) {
   for (bow of BOWS_LIST) {
-    text = text.replace(bow[0], '\uFFFF').replace(bow[1], bow[0]).replace('\uFFFF', bow[1]);
+    text = text.replace(bow[0].fixForRegex().toRegex('g'), '\uFFFF').replace(bow[1].fixForRegex().toRegex('g'), bow[0]).replace('\uFFFF'.fixForRegex().toRegex('g'), bow[1]);
   }
   return text;
 }
