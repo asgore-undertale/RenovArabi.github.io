@@ -244,7 +244,7 @@ function createCTE() {
 function fillCTE(table) { // CipheringTableEditor
   for (var i of range(0, 16)) {
     for (var j of range(0, 16)) {
-      //table.rows.item(i+1).cells.item(j+1).innerText = (table.rows.item(0).cells.item(0).innerText + ((i)*16 + (j)).toString(16)).hexDecode();
+      table.rows.item(i+1).cells.item(j+1).innerText = (table.rows.item(0).cells.item(0).innerText + ((i)*16 + (j)).toString(16)).hexDecode();
     }
   }
   return table;
