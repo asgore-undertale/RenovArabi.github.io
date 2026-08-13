@@ -13,7 +13,7 @@ div {
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
-  height: -webkit-fill-available;
+  /*height: -webkit-fill-available;*/
 }
 
 @media screen and (min-aspect-ratio: 4/3) {
